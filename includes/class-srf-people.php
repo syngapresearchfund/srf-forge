@@ -65,6 +65,7 @@ class SRF_People {
 		$this->did_init = true;
 
 		add_action( 'init', array( $this, 'register_post_type' ) );
+		add_action( 'init', array( $this, 'register_taxonomies' ) );
 	}
 
 	/**
@@ -129,6 +130,109 @@ class SRF_People {
 					'archives'              => 'SRF People Archives',
 					'filter_items_list'     => 'Filter SRF People List',
 					'parent_item_colon'     => 'Parent SRF Person:',
+				],
+			]
+		);
+	}
+
+	/**
+	 * Registers SRF People custom taxonomies.
+	 *
+	 * @since 2021-19-21
+	 */
+	public function register_taxonomies() : void {
+		register_taxonomy(
+			'srf-people-category',
+			'srf-people',
+			[
+				'public'            => false,
+				'show_ui'           => true,
+				'show_admin_column' => true,
+				'hierarchical'      => true,
+
+				'rewrite'           => [
+					'with_front' => false,
+					'slug'       => 'category',
+				],
+
+				'description'       => 'SRF People Categories',
+				'labels'            => [
+					'name'                       => 'SRF People Categories',
+					'singular_name'              => 'SRF People Category',
+
+					'name_admin_bar'             => 'SRF People Category',
+					'menu_name'                  => 'Categories',
+
+					'all_items'                  => 'All Categories',
+					'add_new_item'               => 'Add New Category',
+					'new_item_name'              => 'New Category Name',
+					'add_or_remove_items'        => 'Add or Remove Categories',
+					'view_item'                  => 'View Category',
+					'edit_item'                  => 'Edit Category',
+					'update_item'                => 'Update Category',
+
+					'search_items'               => 'Search Categories',
+					'not_found'                  => 'No Categories Found',
+					'no_terms'                   => 'No Categories',
+
+					'choose_from_most_used'      => 'Choose From the Most Used Categories',
+					'separate_items_with_commas' => 'Separate Categories w/ Commas',
+
+					'items_list'                 => 'Categories List',
+					'items_list_navigation'      => 'Categories List Navigation',
+
+					'archives'                   => 'All Categories',
+					'popular_items'              => 'Popular Categories',
+					'parent_item'                => 'Parent Category',
+					'parent_item_colon'          => 'Parent Category:',
+				],
+			]
+		);
+
+		register_taxonomy(
+			'srf-people-tag',
+			'srf-people',
+			[
+				'public'            => false,
+				'show_ui'           => true,
+				'show_admin_column' => true,
+				'hierarchical'      => false,
+
+				'rewrite'           => [
+					'with_front' => false,
+					'slug'       => 'tag',
+				],
+
+				'description'       => 'SRF People Tags',
+				'labels'            => [
+					'name'                       => 'SRF People Tags',
+					'singular_name'              => 'SRF People Tag',
+
+					'name_admin_bar'             => 'SRF People Tag',
+					'menu_name'                  => 'Tags',
+
+					'all_items'                  => 'All Tags',
+					'add_new_item'               => 'Add New Tag',
+					'new_item_name'              => 'New Tag Name',
+					'add_or_remove_items'        => 'Add or Remove Tags',
+					'view_item'                  => 'View Tag',
+					'edit_item'                  => 'Edit Tag',
+					'update_item'                => 'Update Tag',
+
+					'search_items'               => 'Search Tags',
+					'not_found'                  => 'No Tags Found',
+					'no_terms'                   => 'No Tags',
+
+					'choose_from_most_used'      => 'Choose From the Most Used Tags',
+					'separate_items_with_commas' => 'Separate Tags w/ Commas',
+
+					'items_list'                 => 'Tags List',
+					'items_list_navigation'      => 'Tags List Navigation',
+
+					'archives'                   => 'All Tags',
+					'popular_items'              => 'Popular Tags',
+					'parent_item'                => 'Parent Tag',
+					'parent_item_colon'          => 'Parent Tag:',
 				],
 			]
 		);
