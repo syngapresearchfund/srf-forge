@@ -91,6 +91,10 @@ class SRF_Events {
 				'hierarchical'  => true,
 				'has_archive'   => false,
 				'show_in_rest'  => true,
+				'taxonomies'    => [
+					'srf-events-category',
+					'srf-events-tag',
+				],
 
 				'rewrite'       => [
 					'with_front' => false,

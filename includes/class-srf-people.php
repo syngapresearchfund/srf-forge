@@ -91,6 +91,10 @@ class SRF_People {
 				'hierarchical'  => true,
 				'has_archive'   => false,
 				'show_in_rest'  => true,
+				'taxonomies'    => [
+					'srf-people-category',
+					'srf-people-tag',
+				],
 
 				'rewrite'       => [
 					'with_front' => false,
