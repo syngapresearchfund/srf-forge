@@ -26,3 +26,4 @@ add_action( 'plugins_loaded', 'srf_load_textdomain' );
 
 // Require CPT classes
 require_once __DIR__ . '/includes/class-srf-people.php';
+require_once __DIR__ . '/includes/class-srf-events.php';

@@ -6,9 +6,9 @@
  * @package Landpack
  */
 
-namespace SRF_People;
+namespace SRF_Events;
 
-class SRF_People {
+class SRF_Events {
 	/**
 	 * Singleton instance.
 	 *
@@ -69,13 +69,13 @@ class SRF_People {
 	}
 
 	/**
-	 * Registers SRF People post type.
+	 * Registers SRF Events post type.
 	 *
 	 * @since 2021-19-21
 	 */
 	public function register_post_type() : void {
 		register_post_type(
-			'srf-people',
+			'srf-events',
 			[
 				'public'        => true,
 
@@ -100,24 +100,24 @@ class SRF_People {
 				'menu_position' => 9, // After Snippets [8].
 				'menu_icon'     => 'dashicons-admin-page',
 
-				'description'   => 'SRF People',
+				'description'   => 'SRF Events',
 				'labels'        => [
-					'name'                  => 'SRF People',
+					'name'                  => 'SRF Events',
 					'singular_name'         => 'SRF Person',
 
 					'name_admin_bar'        => 'SRF Person',
-					'menu_name'             => 'SRF People',
+					'menu_name'             => 'SRF Events',
 
-					'all_items'             => 'All SRF People',
+					'all_items'             => 'All SRF Events',
 					'add_new'               => 'Add SRF Person',
 					'add_new_item'          => 'Add New SRF Person',
 					'new_item'              => 'New SRF Person',
 					'edit_item'             => 'Edit SRF Person',
 					'view_item'             => 'View SRF Person',
 
-					'search_items'          => 'Search SRF People',
-					'not_found'             => 'No SRF People Found',
-					'not_found_in_trash'    => 'No SRF People Found in Trash',
+					'search_items'          => 'Search SRF Events',
+					'not_found'             => 'No SRF Events Found',
+					'not_found_in_trash'    => 'No SRF Events Found in Trash',
 
 					'insert_into_item'      => 'Insert Into SRF Person',
 					'uploaded_to_this_item' => 'Upload to this SRF Person',
@@ -126,11 +126,11 @@ class SRF_People {
 					'remove_featured_image' => 'Remove Featured Image',
 					'use_featured_image'    => 'Use as Featured Image',
 
-					'items_list'            => 'SRF People List',
-					'items_list_navigation' => 'SRF People List Navigation',
+					'items_list'            => 'SRF Events List',
+					'items_list_navigation' => 'SRF Events List Navigation',
 
-					'archives'              => 'SRF People Archives',
-					'filter_items_list'     => 'Filter SRF People List',
+					'archives'              => 'SRF Events Archives',
+					'filter_items_list'     => 'Filter SRF Events List',
 					'parent_item_colon'     => 'Parent SRF Person:',
 				],
 			]
@@ -138,14 +138,14 @@ class SRF_People {
 	}
 
 	/**
-	 * Registers SRF People custom taxonomies.
+	 * Registers SRF Events custom taxonomies.
 	 *
 	 * @since 2021-19-21
 	 */
 	public function register_taxonomies() : void {
 		register_taxonomy(
-			'srf-people-category',
-			'srf-people',
+			'srf-events-category',
+			'srf-events',
 			[
 				'public'            => false,
 				'show_ui'           => true,
@@ -157,12 +157,12 @@ class SRF_People {
 					'slug'       => 'category',
 				],
 
-				'description'       => 'SRF People Categories',
+				'description'       => 'SRF Events Categories',
 				'labels'            => [
-					'name'                       => 'SRF People Categories',
-					'singular_name'              => 'SRF People Category',
+					'name'                       => 'SRF Events Categories',
+					'singular_name'              => 'SRF Events Category',
 
-					'name_admin_bar'             => 'SRF People Category',
+					'name_admin_bar'             => 'SRF Events Category',
 					'menu_name'                  => 'Categories',
 
 					'all_items'                  => 'All Categories',
@@ -192,8 +192,8 @@ class SRF_People {
 		);
 
 		register_taxonomy(
-			'srf-people-tag',
-			'srf-people',
+			'srf-events-tag',
+			'srf-events',
 			[
 				'public'            => false,
 				'show_ui'           => true,
@@ -205,12 +205,12 @@ class SRF_People {
 					'slug'       => 'tag',
 				],
 
-				'description'       => 'SRF People Tags',
+				'description'       => 'SRF Events Tags',
 				'labels'            => [
-					'name'                       => 'SRF People Tags',
-					'singular_name'              => 'SRF People Tag',
+					'name'                       => 'SRF Events Tags',
+					'singular_name'              => 'SRF Events Tag',
 
-					'name_admin_bar'             => 'SRF People Tag',
+					'name_admin_bar'             => 'SRF Events Tag',
 					'menu_name'                  => 'Tags',
 
 					'all_items'                  => 'All Tags',
@@ -240,4 +240,4 @@ class SRF_People {
 		);
 	}
 }
-SRF_People::get_instance()->init();
+SRF_Events::get_instance()->init();
