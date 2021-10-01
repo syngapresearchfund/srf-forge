@@ -106,24 +106,24 @@ class SRF_Events {
 				'description'   => 'SRF Events',
 				'labels'        => [
 					'name'                  => 'SRF Events',
-					'singular_name'         => 'SRF Person',
+					'singular_name'         => 'SRF Event',
 
-					'name_admin_bar'        => 'SRF Person',
+					'name_admin_bar'        => 'SRF Event',
 					'menu_name'             => 'SRF Events',
 
 					'all_items'             => 'All SRF Events',
-					'add_new'               => 'Add SRF Person',
-					'add_new_item'          => 'Add New SRF Person',
-					'new_item'              => 'New SRF Person',
-					'edit_item'             => 'Edit SRF Person',
-					'view_item'             => 'View SRF Person',
+					'add_new'               => 'Add SRF Event',
+					'add_new_item'          => 'Add New SRF Event',
+					'new_item'              => 'New SRF Event',
+					'edit_item'             => 'Edit SRF Event',
+					'view_item'             => 'View SRF Event',
 
 					'search_items'          => 'Search SRF Events',
 					'not_found'             => 'No SRF Events Found',
 					'not_found_in_trash'    => 'No SRF Events Found in Trash',
 
-					'insert_into_item'      => 'Insert Into SRF Person',
-					'uploaded_to_this_item' => 'Upload to this SRF Person',
+					'insert_into_item'      => 'Insert Into SRF Event',
+					'uploaded_to_this_item' => 'Upload to this SRF Event',
 
 					'featured_image'        => 'Set Featured Image',
 					'remove_featured_image' => 'Remove Featured Image',
@@ -134,7 +134,7 @@ class SRF_Events {
 
 					'archives'              => 'SRF Events Archives',
 					'filter_items_list'     => 'Filter SRF Events List',
-					'parent_item_colon'     => 'Parent SRF Person:',
+					'parent_item_colon'     => 'Parent SRF Event:',
 				],
 			]
 		);
