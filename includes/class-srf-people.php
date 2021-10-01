@@ -86,10 +86,8 @@ class SRF_People {
 					'author',
 					'thumbnail',
 					'custom-fields',
-					'page-attributes',
 					'revisions',
 				],
-				'hierarchical'  => true,
 				'has_archive'   => true,
 				'show_in_rest'  => true,
 				'taxonomies'    => [
