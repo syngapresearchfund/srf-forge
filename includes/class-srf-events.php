@@ -96,7 +96,6 @@ class SRF_Events {
 				],
 
 				'rewrite'       => [
-					'with_front' => false,
 					'slug'       => 'people',
 				],
 

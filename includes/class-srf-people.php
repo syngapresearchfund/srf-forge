@@ -96,7 +96,6 @@ class SRF_People {
 				],
 
 				'rewrite'       => [
-					'with_front' => false,
 					'slug'       => 'people',
 				],
 
