@@ -90,7 +90,7 @@ class SRF_Events {
 					'revisions',
 				],
 				'hierarchical'  => true,
-				'has_archive'   => false,
+				'has_archive'   => true,
 				'show_in_rest'  => true,
 				'taxonomies'    => [
 					'srf-events-category',
