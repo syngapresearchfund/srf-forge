@@ -82,6 +82,7 @@ class SRF_People {
 				'supports'      => [
 					'title',
 					'editor',
+					'excerpt',
 					'author',
 					'thumbnail',
 					'custom-fields',

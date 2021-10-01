@@ -82,6 +82,7 @@ class SRF_Events {
 				'supports'      => [
 					'title',
 					'editor',
+					'excerpt',
 					'author',
 					'thumbnail',
 					'custom-fields',
