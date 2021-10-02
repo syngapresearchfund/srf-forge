@@ -65,8 +65,10 @@ class SRF_People {
 		$this->did_init = true;
 
 		add_action( 'init', array( $this, 'register_post_type' ) );
-		add_action( 'init', array( $this, 'register_category_tax' ) );
-		add_action( 'init', array( $this, 'register_labels_tax' ) );
+		add_action( 'init', array( $this, 'register_taxonomies' ) );
+
+		add_filter( 'post_type_link', [ $this, 'modify_permalinks' ], 10, 2 );
+ 		add_filter( 'srf-people_rewrite_rules', [ $this, 'modify_rewrite_rules' ] );
 	}
 
 	/**
@@ -120,11 +122,10 @@ class SRF_People {
 			'can_export'          => true,
 			'rewrite'             => array(
 				'with_front' => false,
-				'slug'       => 'people',
+				'slug'       => 'people/%srf-people-category%',
 			),
 			'taxonomies'          => array(
 				'srf-people-category',
-				'srf-people-label',
 			),
 			'capability_type'     => 'post',
 			'supports'            => array(
@@ -145,7 +146,7 @@ class SRF_People {
 	 *
 	 * @since 2021-19-21
 	 */
-	public function register_category_tax() : void {
+	public function register_taxonomies() : void {
 		$labels = array(
 			'name'                       => 'SRF People Categories',
 			'singular_name'              => 'SRF People Category',
@@ -186,10 +187,10 @@ class SRF_People {
 			'show_in_menu'      => true,
 			'show_in_nav_menus' => true,
 			'show_admin_column' => true,
-			'rewrite'           => array(
-				'with_front' => false,
-				'slug'       => 'people-category',
-			),
+			// 'rewrite'           => array(
+			// 	'with_front' => false,
+			// 	'slug'       => 'people',
+			// ),
 		);
 		register_taxonomy(
 			'srf-people-category',
@@ -199,59 +200,56 @@ class SRF_People {
 	}
 
 	/**
-	 * Registers SRF People custom taxonomies.
+	 * Modifies permalinks.
 	 *
-	 * @since 2021-19-21
+	 * @since 2018-08-22
+	 *
+	 * @param  string   $link Link.
+	 * @param  \WP_Post $post Post object.
+	 *
+	 * @return string         Modified link.
 	 */
-	public function register_labels_tax() : void {
-		$labels = array(
-			'name'                       => 'SRF People Labels',
-			'singular_name'              => 'SRF People Label',
+	public function modify_permalinks( $link, $post ) : string {
+		$link = (string) $link;
 
-			'name_admin_bar'             => 'SRF People Label',
-			'menu_name'                  => 'Person Labels',
+		if ( $post instanceof \WP_Post && 'srf-people' === $post->post_type ) {
+			$cats = get_the_terms( $post->ID, 'srf-people-category' );
 
-			'all_items'                  => 'All Labels',
-			'add_new_item'               => 'Add New Label',
-			'new_item_name'              => 'New Label Name',
-			'add_or_remove_items'        => 'Add or Remove Labels',
-			'view_item'                  => 'View Label',
-			'edit_item'                  => 'Edit Label',
-			'update_item'                => 'Update Label',
+			if ( $cats && is_array( $cats ) ) {
+				$cat_slug = current( $cats )->slug;
+				$link     = str_replace( '%srf-people-category%', $cat_slug, $link );
+			} else {
+				$link = str_replace( '%srf-people-category%', 'uncategorized', $link );
+			}
+		}
 
-			'search_items'               => 'Search Labels',
-			'not_found'                  => 'No Labels Found',
-			'no_terms'                   => 'No Labels',
+		return $link;
+	}
 
-			'choose_from_most_used'      => 'Choose From the Most Used Labels',
-			'separate_items_with_commas' => 'Separate Labels w/ Commas',
+	/**
+	 * Modifies rewrite rules.
+	 *
+	 * @since 2018-08-22
+	 *
+	 * @param  array $rules Rewrite rules.
+	 *
+	 * @return array        Modified rewrite rules.
+	 */
+	public function modify_rewrite_rules( $rules ) : array {
+		$modified_rules = []; // Initialize.
+		$rules          = is_array( $rules ) ? $rules : [];
 
-			'items_list'                 => 'Labels List',
-			'items_list_navigation'      => 'Labels List Navigation',
+		foreach ( $rules as $_key => $_value ) {
+			$modified_rules[ preg_replace( '/^people\//u', 'people\\/(?!(?:srf-people-category)\\/)', $_key ) ] = $_value;
 
-			'archives'                   => 'All Labels',
-			'popular_items'              => 'Popular Labels',
-			'parent_item'                => 'Parent Label',
-			'parent_item_colon'          => 'Parent Label:',
-		);
-		$args = array(
-			'labels'            => $labels,
-			'description'       => 'SRF Person Labels',
-			'hierarchical'      => false,
-			'public'            => true,
-			'show_ui'           => true,
-			'show_in_menu'      => true,
-			'show_admin_column' => true,
-			'rewrite'           => array(
-				'with_front' => false,
-				'slug'       => 'people-label',
-			),
-		);
-		register_taxonomy(
-			'srf-people-label',
-			'srf-people',
-			$args
-		);
+			/**
+			 * TODO: Find a way to remove /people from URL in both Archive and Single pages.
+			 * The below solution only works for Archive pages so we're half way there.
+			 */
+			// $modified_rules[ preg_replace( '/^people\//u', '(?!(?:srf-people-category)\\/)', $_key ) ] = $_value;
+		}
+
+		return $modified_rules;
 	}
 }
 SRF_People::get_instance()->init();
