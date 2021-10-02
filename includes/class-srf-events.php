@@ -118,10 +118,10 @@ class SRF_Events {
 			'has_archive'         => true,
 			'query_var'           => true,
 			'can_export'          => true,
-			// 'rewrite'             => array(
-			// 	'with_front' => false,
-			// 	'slug'       => 'people',
-			// ),
+			'rewrite'             => array(
+				'with_front' => false,
+				'slug'       => 'events',
+			),
 			'taxonomies'          => array(
 				'srf-events-category',
 				'srf-events-label',
@@ -185,10 +185,10 @@ class SRF_Events {
 			'show_in_menu'      => true,
 			'show_in_nav_menus' => true,
 			'show_admin_column' => true,
-			// 'rewrite'           => array(
-			// 	'with_front' => false,
-			// 	'slug'       => 'category',
-			// ),
+			'rewrite'           => array(
+				'with_front' => false,
+				'slug'       => 'events-category',
+			),
 		);
 		register_taxonomy(
 			'srf-events-category',
@@ -242,10 +242,10 @@ class SRF_Events {
 			'show_in_menu'      => true,
 			'show_in_nav_menus' => true,
 			'show_admin_column' => true,
-			// 'rewrite'           => array(
-			// 	'with_front' => false,
-			// 	'slug'       => 'label',
-			// ),
+			'rewrite'           => array(
+				'with_front' => false,
+				'slug'       => 'events-label',
+			),
 		);
 		register_taxonomy(
 			'srf-events-label',

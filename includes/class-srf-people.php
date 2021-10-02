@@ -118,10 +118,10 @@ class SRF_People {
 			'has_archive'         => true,
 			'query_var'           => true,
 			'can_export'          => true,
-			// 'rewrite'             => array(
-			// 	'with_front' => false,
-			// 	'slug'       => 'people',
-			// ),
+			'rewrite'             => array(
+				'with_front' => false,
+				'slug'       => 'people',
+			),
 			'taxonomies'          => array(
 				'srf-people-category',
 				'srf-people-label',
@@ -186,10 +186,10 @@ class SRF_People {
 			'show_in_menu'      => true,
 			'show_in_nav_menus' => true,
 			'show_admin_column' => true,
-			// 'rewrite'           => array(
-			// 	'with_front' => false,
-			// 	'slug'       => 'category',
-			// ),
+			'rewrite'           => array(
+				'with_front' => false,
+				'slug'       => 'people-category',
+			),
 		);
 		register_taxonomy(
 			'srf-people-category',
@@ -242,10 +242,10 @@ class SRF_People {
 			'show_ui'           => true,
 			'show_in_menu'      => true,
 			'show_admin_column' => true,
-			// 'rewrite'           => array(
-			// 	'with_front' => false,
-			// 	'slug'       => 'label',
-			// ),
+			'rewrite'           => array(
+				'with_front' => false,
+				'slug'       => 'people-label',
+			),
 		);
 		register_taxonomy(
 			'srf-people-label',
