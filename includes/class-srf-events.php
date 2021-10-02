@@ -65,7 +65,8 @@ class SRF_Events {
 		$this->did_init = true;
 
 		add_action( 'init', array( $this, 'register_post_type' ) );
-		add_action( 'init', array( $this, 'register_taxonomies' ) );
+		add_action( 'init', array( $this, 'register_categories_tax' ) );
+		add_action( 'init', array( $this, 'register_labels_tax' ) );
 	}
 
 	/**
@@ -74,68 +75,125 @@ class SRF_Events {
 	 * @since 2021-19-21
 	 */
 	public function register_post_type() : void {
-		register_post_type(
+		$labels = array(
+			'name'                  => 'SRF Events',
+			'singular_name'         => 'SRF Event',
+
+			'name_admin_bar'        => 'SRF Event',
+			'menu_name'             => 'SRF Events',
+
+			'all_items'             => 'All SRF Events',
+			'add_new'               => 'Add SRF Event',
+			'add_new_item'          => 'Add New SRF Event',
+			'new_item'              => 'New SRF Event',
+			'edit_item'             => 'Edit SRF Event',
+			'view_item'             => 'View SRF Event',
+
+			'search_items'          => 'Search SRF Events',
+			'not_found'             => 'No SRF Events Found',
+			'not_found_in_trash'    => 'No SRF Events Found in Trash',
+
+			// 'items_list'            => 'SRF Events List',
+			// 'items_list_navigation' => 'SRF Events List Navigation',
+
+			// 'archives'              => 'SRF Events Archives',
+			// 'filter_items_list'     => 'Filter SRF Events List',
+			'parent_item_colon'     => 'Parent SRF Event:',
+		);
+
+		$args = array(
+			'labels'              => $labels,
+			'description'         => 'SRF Events',
+			'menu_icon'           => 'dashicons-groups',
+			'menu_position'       => 9, // After something.
+			'hierarchical'        => false,
+			'public'              => true,
+			'show_ui'             => true,
+			'show_in_menu'        => true,
+			'show_in_admin_bar'   => true,
+			'show_in_nav_menus'   => false,
+			'show_in_rest'  => true,
+			'publicly_queryable'  => true,
+			'exclude_from_search' => false,
+			'has_archive'         => true,
+			'query_var'           => true,
+			'can_export'          => true,
+			// 'rewrite'             => array(
+			// 	'with_front' => false,
+			// 	'slug'       => 'people',
+			// ),
+			'taxonomies'          => array(
+				'srf-events-category',
+				'srf-events-label',
+			),
+			'capability_type'     => 'post',
+			'supports'            => array(
+				'title',
+				'editor',
+				'excerpt',
+				'author',
+				'thumbnail',
+				'custom-fields',
+				'revisions',
+			),
+		);
+		register_post_type( 'srf-events', $args );
+	}
+
+	/**
+	 * Registers SRF Events custom taxonomies.
+	 *
+	 * @since 2021-19-21
+	 */
+	public function register_categories_tax() : void {
+		$labels = array(
+			'name'                       => 'SRF Events Categories',
+			'singular_name'              => 'SRF Events Category',
+
+			'name_admin_bar'             => 'SRF Events Category',
+			'menu_name'                  => 'Event Categories',
+
+			'all_items'                  => 'All Categories',
+			'add_new_item'               => 'Add New Category',
+			'new_item_name'              => 'New Category Name',
+			'add_or_remove_items'        => 'Add or Remove Categories',
+			'view_item'                  => 'View Category',
+			'edit_item'                  => 'Edit Category',
+			'update_item'                => 'Update Category',
+
+			'search_items'               => 'Search Categories',
+			'not_found'                  => 'No Categories Found',
+			'no_terms'                   => 'No Categories',
+
+			'choose_from_most_used'      => 'Choose From the Most Used Categories',
+			'separate_items_with_commas' => 'Separate Categories w/ Commas',
+
+			'items_list'                 => 'Categories List',
+			'items_list_navigation'      => 'Categories List Navigation',
+
+			'archives'                   => 'All Categories',
+			'popular_items'              => 'Popular Categories',
+			'parent_item'                => 'Parent Category',
+			'parent_item_colon'          => 'Parent Category:',
+		);
+		$args = array(
+			'labels'            => $labels,
+			'description'       => 'SRF Event Categories',
+			'hierarchical'      => true,
+			'public'            => true,
+			'show_ui'           => true,
+			'show_in_menu'      => true,
+			'show_in_nav_menus' => true,
+			'show_admin_column' => true,
+			// 'rewrite'           => array(
+			// 	'with_front' => false,
+			// 	'slug'       => 'category',
+			// ),
+		);
+		register_taxonomy(
+			'srf-events-category',
 			'srf-events',
-			[
-				'public'        => true,
-
-				'supports'      => [
-					'title',
-					'editor',
-					'excerpt',
-					'author',
-					'thumbnail',
-					'custom-fields',
-					'revisions',
-				],
-				'has_archive'   => true,
-				'show_in_rest'  => true,
-				'taxonomies'    => [
-					'srf-events-category',
-					'srf-events-tag',
-				],
-
-				'rewrite'       => [
-					'slug'       => 'people',
-				],
-
-				'menu_position' => 9, // After Snippets [8].
-				'menu_icon'     => 'dashicons-admin-page',
-
-				'description'   => 'SRF Events',
-				'labels'        => [
-					'name'                  => 'SRF Events',
-					'singular_name'         => 'SRF Event',
-
-					'name_admin_bar'        => 'SRF Event',
-					'menu_name'             => 'SRF Events',
-
-					'all_items'             => 'All SRF Events',
-					'add_new'               => 'Add SRF Event',
-					'add_new_item'          => 'Add New SRF Event',
-					'new_item'              => 'New SRF Event',
-					'edit_item'             => 'Edit SRF Event',
-					'view_item'             => 'View SRF Event',
-
-					'search_items'          => 'Search SRF Events',
-					'not_found'             => 'No SRF Events Found',
-					'not_found_in_trash'    => 'No SRF Events Found in Trash',
-
-					'insert_into_item'      => 'Insert Into SRF Event',
-					'uploaded_to_this_item' => 'Upload to this SRF Event',
-
-					'featured_image'        => 'Set Featured Image',
-					'remove_featured_image' => 'Remove Featured Image',
-					'use_featured_image'    => 'Use as Featured Image',
-
-					'items_list'            => 'SRF Events List',
-					'items_list_navigation' => 'SRF Events List Navigation',
-
-					'archives'              => 'SRF Events Archives',
-					'filter_items_list'     => 'Filter SRF Events List',
-					'parent_item_colon'     => 'Parent SRF Event:',
-				],
-			]
+			$args
 		);
 	}
 
@@ -144,101 +202,55 @@ class SRF_Events {
 	 *
 	 * @since 2021-19-21
 	 */
-	public function register_taxonomies() : void {
-		register_taxonomy(
-			'srf-events-category',
-			'srf-events',
-			[
-				'public'            => false,
-				'show_ui'           => true,
-				'show_admin_column' => true,
-				'hierarchical'      => true,
+	public function register_labels_tax() : void {
+		$labels = array(
+			'name'                       => 'SRF Events Labels',
+			'singular_name'              => 'SRF Events Label',
 
-				'rewrite'           => [
-					'with_front' => false,
-					'slug'       => 'category',
-				],
+			'name_admin_bar'             => 'SRF Events Label',
+			'menu_name'                  => 'Event Labels',
 
-				'description'       => 'SRF Events Categories',
-				'labels'            => [
-					'name'                       => 'SRF Events Categories',
-					'singular_name'              => 'SRF Events Category',
+			'all_items'                  => 'All Labels',
+			'add_new_item'               => 'Add New Label',
+			'new_item_name'              => 'New Label Name',
+			'add_or_remove_items'        => 'Add or Remove Labels',
+			'view_item'                  => 'View Label',
+			'edit_item'                  => 'Edit Label',
+			'update_item'                => 'Update Label',
 
-					'name_admin_bar'             => 'SRF Events Category',
-					'menu_name'                  => 'Categories',
+			'search_items'               => 'Search Labels',
+			'not_found'                  => 'No Labels Found',
+			'no_terms'                   => 'No Labels',
 
-					'all_items'                  => 'All Categories',
-					'add_new_item'               => 'Add New Category',
-					'new_item_name'              => 'New Category Name',
-					'add_or_remove_items'        => 'Add or Remove Categories',
-					'view_item'                  => 'View Category',
-					'edit_item'                  => 'Edit Category',
-					'update_item'                => 'Update Category',
+			'choose_from_most_used'      => 'Choose From the Most Used Labels',
+			'separate_items_with_commas' => 'Separate Labels w/ Commas',
 
-					'search_items'               => 'Search Categories',
-					'not_found'                  => 'No Categories Found',
-					'no_terms'                   => 'No Categories',
+			'items_list'                 => 'Labels List',
+			'items_list_navigation'      => 'Labels List Navigation',
 
-					'choose_from_most_used'      => 'Choose From the Most Used Categories',
-					'separate_items_with_commas' => 'Separate Categories w/ Commas',
-
-					'items_list'                 => 'Categories List',
-					'items_list_navigation'      => 'Categories List Navigation',
-
-					'archives'                   => 'All Categories',
-					'popular_items'              => 'Popular Categories',
-					'parent_item'                => 'Parent Category',
-					'parent_item_colon'          => 'Parent Category:',
-				],
-			]
+			'archives'                   => 'All Labels',
+			'popular_items'              => 'Popular Labels',
+			'parent_item'                => 'Parent Label',
+			'parent_item_colon'          => 'Parent Label:',
 		);
-
+		$args = array(
+			'labels'            => $labels,
+			'description'       => 'SRF Event Labels',
+			'hierarchical'      => false,
+			'public'            => true,
+			'show_ui'           => true,
+			'show_in_menu'      => true,
+			'show_in_nav_menus' => true,
+			'show_admin_column' => true,
+			// 'rewrite'           => array(
+			// 	'with_front' => false,
+			// 	'slug'       => 'label',
+			// ),
+		);
 		register_taxonomy(
-			'srf-events-tag',
+			'srf-events-label',
 			'srf-events',
-			[
-				'public'            => false,
-				'show_ui'           => true,
-				'show_admin_column' => true,
-				'hierarchical'      => false,
-
-				'rewrite'           => [
-					'with_front' => false,
-					'slug'       => 'tag',
-				],
-
-				'description'       => 'SRF Events Tags',
-				'labels'            => [
-					'name'                       => 'SRF Events Tags',
-					'singular_name'              => 'SRF Events Tag',
-
-					'name_admin_bar'             => 'SRF Events Tag',
-					'menu_name'                  => 'Tags',
-
-					'all_items'                  => 'All Tags',
-					'add_new_item'               => 'Add New Tag',
-					'new_item_name'              => 'New Tag Name',
-					'add_or_remove_items'        => 'Add or Remove Tags',
-					'view_item'                  => 'View Tag',
-					'edit_item'                  => 'Edit Tag',
-					'update_item'                => 'Update Tag',
-
-					'search_items'               => 'Search Tags',
-					'not_found'                  => 'No Tags Found',
-					'no_terms'                   => 'No Tags',
-
-					'choose_from_most_used'      => 'Choose From the Most Used Tags',
-					'separate_items_with_commas' => 'Separate Tags w/ Commas',
-
-					'items_list'                 => 'Tags List',
-					'items_list_navigation'      => 'Tags List Navigation',
-
-					'archives'                   => 'All Tags',
-					'popular_items'              => 'Popular Tags',
-					'parent_item'                => 'Parent Tag',
-					'parent_item_colon'          => 'Parent Tag:',
-				],
-			]
+			$args
 		);
 	}
 }
