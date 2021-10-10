@@ -122,7 +122,8 @@ class SRF_People {
 			'can_export'          => true,
 			'rewrite'             => array(
 				'with_front' => false,
-				'slug'       => 'people/%srf-people-category%',
+				// 'slug'       => 'people/%srf-people-category%',
+				'slug'       => '%srf-people-category%',
 			),
 			'taxonomies'          => array(
 				'srf-people-category',
@@ -187,10 +188,17 @@ class SRF_People {
 			'show_in_menu'      => true,
 			'show_in_nav_menus' => true,
 			'show_admin_column' => true,
-			// 'rewrite'           => array(
-			// 	'with_front' => false,
-			// 	'slug'       => 'people',
-			// ),
+			'sort'              => true,
+			'capabilities' => array(
+				'manage_terms'  =>   'manage_srf-people-category',
+				'edit_terms'    =>   'edit_srf-people-category',
+				'delete_terms'  =>   'delete_srf-people-category',
+				'assign_terms'  =>   'assign_srf-people-category',
+			),
+			'default_term'      => array(
+				'name' => 'Uncategorized',
+				'slug' => 'uncategorized'
+			),
 		);
 		register_taxonomy(
 			'srf-people-category',
@@ -241,12 +249,6 @@ class SRF_People {
 
 		foreach ( $rules as $_key => $_value ) {
 			$modified_rules[ preg_replace( '/^people\//u', 'people\\/(?!(?:srf-people-category)\\/)', $_key ) ] = $_value;
-
-			/**
-			 * TODO: Find a way to remove /people from URL in both Archive and Single pages.
-			 * The below solution only works for Archive pages so we're half way there.
-			 */
-			// $modified_rules[ preg_replace( '/^people\//u', '(?!(?:srf-people-category)\\/)', $_key ) ] = $_value;
 		}
 
 		return $modified_rules;
