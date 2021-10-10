@@ -67,8 +67,8 @@ class SRF_People {
 		add_action( 'init', array( $this, 'register_post_type' ) );
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
 
-		add_filter( 'post_type_link', [ $this, 'modify_permalinks' ], 10, 2 );
- 		add_filter( 'srf-people_rewrite_rules', [ $this, 'modify_rewrite_rules' ] );
+		add_filter( 'post_type_link', array( $this, 'modify_permalinks' ), 10, 2 );
+ 		add_filter( 'srf-people_rewrite_rules', array( $this, 'modify_rewrite_rules' ) );
 	}
 
 	/**
