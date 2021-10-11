@@ -1,9 +1,9 @@
 <?php
 /**
- * Landpack Post Type
+ * SRF Events Post Type
  *
  * @since 2021-09-21
- * @package Landpack
+ * @package srf
  */
 
 namespace SRF_Events;
@@ -106,24 +106,25 @@ class SRF_Events {
 		$args = array(
 			'labels'              => $labels,
 			'description'         => 'SRF Events',
-			'menu_icon'           => 'dashicons-groups',
-			'menu_position'       => 9, // After something.
+			'menu_icon'           => 'dashicons-tickets',
+			'menu_position'       => 21, // After People.
 			'hierarchical'        => false,
 			'public'              => true,
 			'show_ui'             => true,
 			'show_in_menu'        => true,
 			'show_in_admin_bar'   => true,
 			'show_in_nav_menus'   => false,
-			'show_in_rest'  => true,
+			'show_in_rest'        => true,
 			'publicly_queryable'  => true,
 			'exclude_from_search' => false,
 			'has_archive'         => true,
 			'query_var'           => true,
 			'can_export'          => true,
 			'rewrite'             => array(
-				// 'with_front' => false,
+				'with_front' => false,
 				// 'slug'       => 'events',
-				'slug'       => 'events/%srf-events-category%',
+				// 'slug'       => 'events/%srf-events-category%',
+				'slug'       => '%srf-events-category%',
 			),
 			'taxonomies'          => array(
 				'srf-events-category',
@@ -149,34 +150,34 @@ class SRF_Events {
 	 */
 	public function register_taxonomies() : void {
 		$labels = array(
-			'name'                       => 'SRF Events Categories',
-			'singular_name'              => 'SRF Events Category',
+			'name'                       => 'SRF Event Categories',
+			'singular_name'              => 'SRF Event Category',
 
 			'name_admin_bar'             => 'SRF Events Category',
 			'menu_name'                  => 'Event Categories',
 
-			'all_items'                  => 'All Categories',
-			'add_new_item'               => 'Add New Category',
-			'new_item_name'              => 'New Category Name',
-			'add_or_remove_items'        => 'Add or Remove Categories',
-			'view_item'                  => 'View Category',
-			'edit_item'                  => 'Edit Category',
-			'update_item'                => 'Update Category',
+			'all_items'                  => 'All Event Categories',
+			'add_new_item'               => 'Add New Event Category',
+			'new_item_name'              => 'New Event Category Name',
+			'add_or_remove_items'        => 'Add or Remove Event Categories',
+			'view_item'                  => 'View Event Category',
+			'edit_item'                  => 'Edit Event Category',
+			'update_item'                => 'Update Event Category',
 
-			'search_items'               => 'Search Categories',
-			'not_found'                  => 'No Categories Found',
-			'no_terms'                   => 'No Categories',
+			'search_items'               => 'Search Event Categories',
+			'not_found'                  => 'No Event Categories Found',
+			'no_terms'                   => 'No Event Categories',
 
-			'choose_from_most_used'      => 'Choose From the Most Used Categories',
-			'separate_items_with_commas' => 'Separate Categories w/ Commas',
+			'choose_from_most_used'      => 'Choose From the Most Used Event Categories',
+			'separate_items_with_commas' => 'Separate Event Categories w/ Commas',
 
-			'items_list'                 => 'Categories List',
-			'items_list_navigation'      => 'Categories List Navigation',
+			'items_list'                 => 'Event Categories List',
+			'items_list_navigation'      => 'Event Categories List Navigation',
 
-			'archives'                   => 'All Categories',
-			'popular_items'              => 'Popular Categories',
-			'parent_item'                => 'Parent Category',
-			'parent_item_colon'          => 'Parent Category:',
+			'archives'                   => 'All Event Categories',
+			'popular_items'              => 'Popular Event Categories',
+			'parent_item'                => 'Parent Event Category',
+			'parent_item_colon'          => 'Parent Event Category:',
 		);
 		$args = array(
 			'labels'            => $labels,
@@ -187,6 +188,7 @@ class SRF_Events {
 			'show_in_menu'      => true,
 			'show_in_nav_menus' => true,
 			'show_admin_column' => true,
+			'sort'              => true,
 			'capabilities' => array(
 				'manage_terms'  =>   'manage_srf-events-category',
 				'edit_terms'    =>   'edit_srf-events-category',
@@ -197,10 +199,6 @@ class SRF_Events {
 				'name' => 'Uncategorized',
 				'slug' => 'uncategorized'
 			),
-			// 'rewrite'           => array(
-			// 	'with_front' => false,
-			// 	'slug'       => 'event-category',
-			// ),
 		);
 		register_taxonomy(
 			'srf-events-category',
