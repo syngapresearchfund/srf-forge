@@ -1,9 +1,9 @@
 <?php
 /**
- * Landpack Post Type
+ * SRF People Post Type
  *
  * @since 2021-09-21
- * @package Landpack
+ * @package srf
  */
 
 namespace SRF_People;
@@ -107,14 +107,14 @@ class SRF_People {
 			'labels'              => $labels,
 			'description'         => 'SRF People',
 			'menu_icon'           => 'dashicons-groups',
-			'menu_position'       => 9, // After something.
+			'menu_position'       => 20, // After Pages.
 			'hierarchical'        => false,
 			'public'              => true,
 			'show_ui'             => true,
 			'show_in_menu'        => true,
 			'show_in_admin_bar'   => true,
 			'show_in_nav_menus'   => false,
-			'show_in_rest'  => true,
+			'show_in_rest'        => true,
 			'publicly_queryable'  => true,
 			'exclude_from_search' => false,
 			'has_archive'         => true,
@@ -153,35 +153,34 @@ class SRF_People {
 			'singular_name'              => 'SRF People Category',
 
 			'name_admin_bar'             => 'SRF People Category',
-			'menu_name'                  => 'Person Categories',
+			'menu_name'                  => 'People Categories',
 
-			'all_items'                  => 'All Categories',
-			'add_new_item'               => 'Add New Category',
-			'new_item_name'              => 'New Category Name',
-			'add_or_remove_items'        => 'Add or Remove Categories',
-			'view_item'                  => 'View Category',
-			'edit_item'                  => 'Edit Category',
-			'update_item'                => 'Update Category',
+			'all_items'                  => 'All People Categories',
+			'add_new_item'               => 'Add New People Category',
+			'new_item_name'              => 'New People Category Name',
+			'add_or_remove_items'        => 'Add or Remove People Categories',
+			'view_item'                  => 'View People Category',
+			'edit_item'                  => 'Edit People Category',
+			'update_item'                => 'Update People Category',
 
-			'search_items'               => 'Search Categories',
-			'not_found'                  => 'No Categories Found',
-			'no_terms'                   => 'No Categories',
+			'search_items'               => 'Search People Categories',
+			'not_found'                  => 'No People Categories Found',
+			'no_terms'                   => 'No People Categories',
 
-			'choose_from_most_used'      => 'Choose From the Most Used Categories',
-			'separate_items_with_commas' => 'Separate Categories w/ Commas',
+			'choose_from_most_used'      => 'Choose From the Most Used People Categories',
+			'separate_items_with_commas' => 'Separate People Categories w/ Commas',
 
-			'items_list'                 => 'Categories List',
-			'items_list_navigation'      => 'Categories List Navigation',
+			'items_list'                 => 'People Categories List',
+			'items_list_navigation'      => 'People Categories List Navigation',
 
-			'archives'                   => 'All Categories',
-			'popular_items'              => 'Popular Categories',
-			'parent_item'                => 'Parent Category',
-			'parent_item_colon'          => 'Parent Category:',
-
+			'archives'                   => 'All People Categories',
+			'popular_items'              => 'Popular People Categories',
+			'parent_item'                => 'Parent People Category',
+			'parent_item_colon'          => 'Parent People Category:',
 		);
 		$args = array(
 			'labels'            => $labels,
-			'description'       => 'SRF Person Categories',
+			'description'       => 'SRF People Categories',
 			'hierarchical'      => true,
 			'public'            => true,
 			'show_ui'           => true,
