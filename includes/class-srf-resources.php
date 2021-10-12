@@ -68,7 +68,6 @@ class SRF_Resources {
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
 
 		add_filter( 'post_type_link', array( $this, 'modify_permalinks' ), 10, 2 );
- 		// add_filter( 'srf-resources_rewrite_rules', array( $this, 'modify_rewrite_rules' ) );
 	}
 
 	/**
@@ -95,11 +94,6 @@ class SRF_Resources {
 			'not_found'             => 'No SRF Resources Found',
 			'not_found_in_trash'    => 'No SRF Resources Found in Trash',
 
-			// 'items_list'            => 'SRF Resources List',
-			// 'items_list_navigation' => 'SRF Resources List Navigation',
-
-			// 'archives'              => 'SRF Resources Archives',
-			// 'filter_items_list'     => 'Filter SRF Resources List',
 			'parent_item_colon'     => 'Parent SRF Resource:',
 		);
 
@@ -123,7 +117,6 @@ class SRF_Resources {
 			'rewrite'             => array(
 				'with_front' => false,
 				'slug'       => 'resources/%srf-resources-category%',
-				// 'slug'       => '%srf-resources-category%',
 			),
 			'taxonomies'          => array(
 				'srf-resources-category',
@@ -221,26 +214,6 @@ class SRF_Resources {
 		}
 
 		return $link;
-	}
-
-	/**
-	 * Modifies rewrite rules.
-	 *
-	 * @since 2018-08-22
-	 *
-	 * @param  array $rules Rewrite rules.
-	 *
-	 * @return array        Modified rewrite rules.
-	 */
-	public function modify_rewrite_rules( $rules ) : array {
-		$modified_rules = []; // Initialize.
-		$rules          = is_array( $rules ) ? $rules : [];
-
-		foreach ( $rules as $_key => $_value ) {
-			$modified_rules[ preg_replace( '/^resources\//u', 'resources\\/(?!(?:srf-resources-category)\\/)', $_key ) ] = $_value;
-		}
-
-		return $modified_rules;
 	}
 }
 SRF_Resources::get_instance()->init();
