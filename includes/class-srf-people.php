@@ -188,16 +188,6 @@ class SRF_People {
 			'show_in_nav_menus' => true,
 			'show_admin_column' => true,
 			'sort'              => true,
-			'capabilities' => array(
-				'manage_terms'  =>   'manage_srf-people-category',
-				'edit_terms'    =>   'edit_srf-people-category',
-				'delete_terms'  =>   'delete_srf-people-category',
-				'assign_terms'  =>   'assign_srf-people-category',
-			),
-			'default_term'      => array(
-				'name' => 'Uncategorized',
-				'slug' => 'uncategorized'
-			),
 		);
 		register_taxonomy(
 			'srf-people-category',

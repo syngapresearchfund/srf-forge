@@ -188,16 +188,6 @@ class SRF_Resources {
 			'show_in_nav_menus' => true,
 			'show_admin_column' => true,
 			'sort'              => true,
-			'capabilities' => array(
-				'manage_terms'  =>   'manage_srf-resources-category',
-				'edit_terms'    =>   'edit_srf-resources-category',
-				'delete_terms'  =>   'delete_srf-resources-category',
-				'assign_terms'  =>   'assign_srf-resources-category',
-			),
-			'default_term'      => array(
-				'name' => 'Uncategorized',
-				'slug' => 'uncategorized'
-			),
 		);
 		register_taxonomy(
 			'srf-resources-category',

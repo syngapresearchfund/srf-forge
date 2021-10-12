@@ -189,16 +189,6 @@ class SRF_Events {
 			'show_in_nav_menus' => true,
 			'show_admin_column' => true,
 			'sort'              => true,
-			'capabilities' => array(
-				'manage_terms'  =>   'manage_srf-events-category',
-				'edit_terms'    =>   'edit_srf-events-category',
-				'delete_terms'  =>   'delete_srf-events-category',
-				'assign_terms'  =>   'assign_srf-events-category',
-			),
-			'default_term'      => array(
-				'name' => 'Uncategorized',
-				'slug' => 'uncategorized'
-			),
 		);
 		register_taxonomy(
 			'srf-events-category',
