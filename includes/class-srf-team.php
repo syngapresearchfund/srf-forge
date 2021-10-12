@@ -116,7 +116,7 @@ class SRF_Team {
 			'can_export'          => true,
 			'rewrite'             => array(
 				'with_front' => false,
-				'slug'       => 'people/%srf-team-category%',
+				'slug'       => 'team/%srf-team-category%',
 			),
 			'taxonomies'          => array(
 				'srf-team-category',
