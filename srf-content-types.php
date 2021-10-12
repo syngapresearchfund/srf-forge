@@ -25,6 +25,7 @@ function srf_load_textdomain() {
 add_action( 'plugins_loaded', 'srf_load_textdomain' );
 
 // Require CPT classes
-require_once __DIR__ . '/includes/class-srf-people.php';
+require_once __DIR__ . '/includes/class-srf-warriors.php';
+require_once __DIR__ . '/includes/class-srf-team.php';
 require_once __DIR__ . '/includes/class-srf-events.php';
 require_once __DIR__ . '/includes/class-srf-resources.php';
