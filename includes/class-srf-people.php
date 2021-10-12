@@ -68,7 +68,7 @@ class SRF_People {
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
 
 		add_filter( 'post_type_link', array( $this, 'modify_permalinks' ), 10, 2 );
- 		add_filter( 'srf-people_rewrite_rules', array( $this, 'modify_rewrite_rules' ) );
+ 		// add_filter( 'srf-people_rewrite_rules', array( $this, 'modify_rewrite_rules' ) );
 	}
 
 	/**
@@ -122,8 +122,8 @@ class SRF_People {
 			'can_export'          => true,
 			'rewrite'             => array(
 				'with_front' => false,
-				// 'slug'       => 'people/%srf-people-category%',
-				'slug'       => '%srf-people-category%',
+				'slug'       => 'people/%srf-people-category%',
+				// 'slug'       => '%srf-people-category%',
 			),
 			'taxonomies'          => array(
 				'srf-people-category',

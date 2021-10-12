@@ -68,7 +68,7 @@ class SRF_Events {
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
 
 		add_filter( 'post_type_link', array( $this, 'modify_permalinks' ), 10, 2 );
- 		add_filter( 'srf-events_rewrite_rules', array( $this, 'modify_rewrite_rules' ) );
+ 		// add_filter( 'srf-events_rewrite_rules', array( $this, 'modify_rewrite_rules' ) );
 	}
 
 	/**
@@ -123,8 +123,8 @@ class SRF_Events {
 			'rewrite'             => array(
 				'with_front' => false,
 				// 'slug'       => 'events',
-				// 'slug'       => 'events/%srf-events-category%',
-				'slug'       => '%srf-events-category%',
+				'slug'       => 'events/%srf-events-category%',
+				// 'slug'       => '%srf-events-category%',
 			),
 			'taxonomies'          => array(
 				'srf-events-category',

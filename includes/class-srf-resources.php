@@ -68,7 +68,7 @@ class SRF_Resources {
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
 
 		add_filter( 'post_type_link', array( $this, 'modify_permalinks' ), 10, 2 );
- 		add_filter( 'srf-resources_rewrite_rules', array( $this, 'modify_rewrite_rules' ) );
+ 		// add_filter( 'srf-resources_rewrite_rules', array( $this, 'modify_rewrite_rules' ) );
 	}
 
 	/**
@@ -122,8 +122,8 @@ class SRF_Resources {
 			'can_export'          => true,
 			'rewrite'             => array(
 				'with_front' => false,
-				// 'slug'       => 'resources/%srf-resources-category%',
-				'slug'       => '%srf-resources-category%',
+				'slug'       => 'resources/%srf-resources-category%',
+				// 'slug'       => '%srf-resources-category%',
 			),
 			'taxonomies'          => array(
 				'srf-resources-category',
