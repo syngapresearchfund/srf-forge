@@ -43,7 +43,7 @@ class SRF_Events {
 	 */
 	public static function get_instance() : self {
 		if ( null === self::$instance ) {
-			self::$instance = new self;
+			self::$instance = new self();
 		}
 
 		return self::$instance;
@@ -77,24 +77,24 @@ class SRF_Events {
 	 */
 	public function register_post_type() : void {
 		$labels = array(
-			'name'                  => 'SRF Events',
-			'singular_name'         => 'SRF Event',
+			'name'               => 'SRF Events',
+			'singular_name'      => 'SRF Event',
 
-			'name_admin_bar'        => 'SRF Event',
-			'menu_name'             => 'SRF Events',
+			'name_admin_bar'     => 'SRF Event',
+			'menu_name'          => 'SRF Events',
 
-			'all_items'             => 'All SRF Events',
-			'add_new'               => 'Add SRF Event',
-			'add_new_item'          => 'Add New SRF Event',
-			'new_item'              => 'New SRF Event',
-			'edit_item'             => 'Edit SRF Event',
-			'view_item'             => 'View SRF Event',
+			'all_items'          => 'All SRF Events',
+			'add_new'            => 'Add SRF Event',
+			'add_new_item'       => 'Add New SRF Event',
+			'new_item'           => 'New SRF Event',
+			'edit_item'          => 'Edit SRF Event',
+			'view_item'          => 'View SRF Event',
 
-			'search_items'          => 'Search SRF Events',
-			'not_found'             => 'No SRF Events Found',
-			'not_found_in_trash'    => 'No SRF Events Found in Trash',
+			'search_items'       => 'Search SRF Events',
+			'not_found'          => 'No SRF Events Found',
+			'not_found_in_trash' => 'No SRF Events Found in Trash',
 
-			'parent_item_colon'     => 'Parent SRF Event:',
+			'parent_item_colon'  => 'Parent SRF Event:',
 		);
 
 		$args = array(
@@ -130,6 +130,7 @@ class SRF_Events {
 				'thumbnail',
 				'custom-fields',
 				'revisions',
+				'page-attributes',
 			),
 		);
 		register_post_type( 'srf-events', $args );
@@ -171,7 +172,7 @@ class SRF_Events {
 			'parent_item'                => 'Parent Event Category',
 			'parent_item_colon'          => 'Parent Event Category:',
 		);
-		$args = array(
+		$args   = array(
 			'labels'            => $labels,
 			'description'       => 'SRF Event Categories',
 			'hierarchical'      => true,
@@ -180,6 +181,7 @@ class SRF_Events {
 			'show_in_menu'      => true,
 			'show_in_nav_menus' => true,
 			'show_admin_column' => true,
+			'show_in_rest'      => true,
 			'sort'              => true,
 		);
 		register_taxonomy(

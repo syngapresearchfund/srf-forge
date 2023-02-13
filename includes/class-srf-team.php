@@ -43,7 +43,7 @@ class SRF_Team {
 	 */
 	public static function get_instance() : self {
 		if ( null === self::$instance ) {
-			self::$instance = new self;
+			self::$instance = new self();
 		}
 
 		return self::$instance;
@@ -68,6 +68,7 @@ class SRF_Team {
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
 
 		add_filter( 'post_type_link', array( $this, 'modify_permalinks' ), 10, 2 );
+		add_action( 'generate_rewrite_rules', array( $this, 'custom_rewrite_rules' ) );
 	}
 
 	/**
@@ -77,24 +78,24 @@ class SRF_Team {
 	 */
 	public function register_post_type() : void {
 		$labels = array(
-			'name'                  => 'SRF Team',
-			'singular_name'         => 'SRF Team Member',
+			'name'               => 'SRF Team',
+			'singular_name'      => 'SRF Team Member',
 
-			'name_admin_bar'        => 'SRF Team Member',
-			'menu_name'             => 'SRF Team',
+			'name_admin_bar'     => 'SRF Team Member',
+			'menu_name'          => 'SRF Team',
 
-			'all_items'             => 'All SRF Team',
-			'add_new'               => 'Add SRF Team Member',
-			'add_new_item'          => 'Add New SRF Team Member',
-			'new_item'              => 'New SRF Team Member',
-			'edit_item'             => 'Edit SRF Team Member',
-			'view_item'             => 'View SRF Team Member',
+			'all_items'          => 'All SRF Team',
+			'add_new'            => 'Add SRF Team Member',
+			'add_new_item'       => 'Add New SRF Team Member',
+			'new_item'           => 'New SRF Team Member',
+			'edit_item'          => 'Edit SRF Team Member',
+			'view_item'          => 'View SRF Team Member',
 
-			'search_items'          => 'Search SRF Team',
-			'not_found'             => 'No SRF Team Found',
-			'not_found_in_trash'    => 'No SRF Team Found in Trash',
+			'search_items'       => 'Search SRF Team',
+			'not_found'          => 'No SRF Team Found',
+			'not_found_in_trash' => 'No SRF Team Found in Trash',
 
-			'parent_item_colon'     => 'Parent SRF Team Member:',
+			'parent_item_colon'  => 'Parent SRF Team Member:',
 		);
 
 		$args = array(
@@ -114,10 +115,7 @@ class SRF_Team {
 			'has_archive'         => true,
 			'query_var'           => true,
 			'can_export'          => true,
-			'rewrite'             => array(
-				'with_front' => false,
-				'slug'       => 'team/%srf-team-category%',
-			),
+			'rewrite'             => true,
 			'taxonomies'          => array(
 				'srf-team-category',
 			),
@@ -130,6 +128,7 @@ class SRF_Team {
 				'thumbnail',
 				'custom-fields',
 				'revisions',
+				'page-attributes',
 			),
 		);
 		register_post_type( 'srf-team', $args );
@@ -171,7 +170,7 @@ class SRF_Team {
 			'parent_item'                => 'Parent Team Category',
 			'parent_item_colon'          => 'Parent Team Category:',
 		);
-		$args = array(
+		$args   = array(
 			'labels'            => $labels,
 			'description'       => 'SRF Team Categories',
 			'hierarchical'      => true,
@@ -180,7 +179,11 @@ class SRF_Team {
 			'show_in_menu'      => true,
 			'show_in_nav_menus' => true,
 			'show_admin_column' => true,
+			'show_in_rest'      => true,
 			'sort'              => true,
+			'rewrite'           => array(
+				'slug' => 'team',
+			),
 		);
 		register_taxonomy(
 			'srf-team-category',
@@ -194,26 +197,60 @@ class SRF_Team {
 	 *
 	 * @since 2018-08-22
 	 *
-	 * @param  string   $link Link.
+	 * @param  string   $permalink Link.
 	 * @param  \WP_Post $post Post object.
 	 *
 	 * @return string         Modified link.
 	 */
-	public function modify_permalinks( $link, $post ) : string {
-		$link = (string) $link;
+	public function modify_permalinks( $permalink, $post ) : string {
+		if ( 'srf-team' === $post->post_type ) {
+			$resource_terms = get_the_terms( $post, 'srf-team-category' );
+			$term_slug      = '';
+			if ( ! empty( $resource_terms ) ) {
+				foreach ( $resource_terms as $term ) {
 
-		if ( $post instanceof \WP_Post && 'srf-team' === $post->post_type ) {
-			$cats = get_the_terms( $post->ID, 'srf-team-category' );
+					// The featured resource will have another category which is the main one.
+					if ( 'featured' === $term->slug ) {
+						continue;
+					}
 
-			if ( $cats && is_array( $cats ) ) {
-				$cat_slug = current( $cats )->slug;
-				$link     = str_replace( '%srf-team-category%', $cat_slug, $link );
-			} else {
-				$link = str_replace( '%srf-team-category%', 'uncategorized', $link );
+					$term_slug = $term->slug;
+					break;
+				}
 			}
+			$permalink = get_home_url() . '/team/' . $term_slug . '/' . $post->post_name;
+		}
+		return $permalink;
+	}
+
+	/**
+	 * Attempts to fix pagination for taxonomy permalinks.
+	 *
+	 * @since 2018-08-22
+	 *
+	 * @param  $wp_rewrite Rewrite rules array.
+	 *
+	 * @return void
+	 */
+	public function custom_rewrite_rules( $wp_rewrite ) : void {
+		$rules = array();
+		$terms = get_terms(
+			array(
+				'taxonomy'   => 'srf-team-category',
+				'hide_empty' => false,
+			)
+		);
+
+		$post_type = 'srf-team';
+
+		foreach ( $terms as $term ) {
+
+			$rules[ 'team/' . $term->slug . '/([^/]*)$' ] = 'index.php?post_type=' . $post_type . '&srf-team=$matches[1]&name=$matches[1]';
+
 		}
 
-		return $link;
+		// merge with global rules.
+		$wp_rewrite->rules = $rules + $wp_rewrite->rules;
 	}
 }
 SRF_Team::get_instance()->init();

@@ -43,7 +43,7 @@ class SRF_Resources {
 	 */
 	public static function get_instance() : self {
 		if ( null === self::$instance ) {
-			self::$instance = new self;
+			self::$instance = new self();
 		}
 
 		return self::$instance;
@@ -68,6 +68,7 @@ class SRF_Resources {
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
 
 		add_filter( 'post_type_link', array( $this, 'modify_permalinks' ), 10, 2 );
+		add_action( 'generate_rewrite_rules', array( $this, 'custom_rewrite_rules' ) );
 	}
 
 	/**
@@ -77,24 +78,24 @@ class SRF_Resources {
 	 */
 	public function register_post_type() : void {
 		$labels = array(
-			'name'                  => 'SRF Resources',
-			'singular_name'         => 'SRF Resource',
+			'name'               => 'SRF Resources',
+			'singular_name'      => 'SRF Resource',
 
-			'name_admin_bar'        => 'SRF Resource',
-			'menu_name'             => 'SRF Resources',
+			'name_admin_bar'     => 'SRF Resource',
+			'menu_name'          => 'SRF Resources',
 
-			'all_items'             => 'All SRF Resources',
-			'add_new'               => 'Add SRF Resource',
-			'add_new_item'          => 'Add New SRF Resource',
-			'new_item'              => 'New SRF Resource',
-			'edit_item'             => 'Edit SRF Resource',
-			'view_item'             => 'View SRF Resource',
+			'all_items'          => 'All SRF Resources',
+			'add_new'            => 'Add SRF Resource',
+			'add_new_item'       => 'Add New SRF Resource',
+			'new_item'           => 'New SRF Resource',
+			'edit_item'          => 'Edit SRF Resource',
+			'view_item'          => 'View SRF Resource',
 
-			'search_items'          => 'Search SRF Resources',
-			'not_found'             => 'No SRF Resources Found',
-			'not_found_in_trash'    => 'No SRF Resources Found in Trash',
+			'search_items'       => 'Search SRF Resources',
+			'not_found'          => 'No SRF Resources Found',
+			'not_found_in_trash' => 'No SRF Resources Found in Trash',
 
-			'parent_item_colon'     => 'Parent SRF Resource:',
+			'parent_item_colon'  => 'Parent SRF Resource:',
 		);
 
 		$args = array(
@@ -114,10 +115,7 @@ class SRF_Resources {
 			'has_archive'         => true,
 			'query_var'           => true,
 			'can_export'          => true,
-			'rewrite'             => array(
-				'with_front' => false,
-				'slug'       => 'resources/%srf-resources-category%',
-			),
+			'rewrite'             => true,
 			'taxonomies'          => array(
 				'srf-resources-category',
 			),
@@ -130,6 +128,7 @@ class SRF_Resources {
 				'thumbnail',
 				'custom-fields',
 				'revisions',
+				'page-attributes',
 			),
 		);
 		register_post_type( 'srf-resources', $args );
@@ -171,7 +170,7 @@ class SRF_Resources {
 			'parent_item'                => 'Parent Resource Category',
 			'parent_item_colon'          => 'Parent Resource Category:',
 		);
-		$args = array(
+		$args   = array(
 			'labels'            => $labels,
 			'description'       => 'SRF Resources Categories',
 			'hierarchical'      => true,
@@ -180,7 +179,11 @@ class SRF_Resources {
 			'show_in_menu'      => true,
 			'show_in_nav_menus' => true,
 			'show_admin_column' => true,
+			'show_in_rest'      => true,
 			'sort'              => true,
+			'rewrite'           => array(
+				'slug' => 'resources',
+			),
 		);
 		register_taxonomy(
 			'srf-resources-category',
@@ -194,26 +197,60 @@ class SRF_Resources {
 	 *
 	 * @since 2018-08-22
 	 *
-	 * @param  string   $link Link.
+	 * @param  string   $permalink Link.
 	 * @param  \WP_Post $post Post object.
 	 *
 	 * @return string         Modified link.
 	 */
-	public function modify_permalinks( $link, $post ) : string {
-		$link = (string) $link;
+	public function modify_permalinks( $permalink, $post ) : string {
+		if ( 'srf-resources' === $post->post_type ) {
+			$resource_terms = get_the_terms( $post, 'srf-resources-category' );
+			$term_slug      = '';
+			if ( ! empty( $resource_terms ) ) {
+				foreach ( $resource_terms as $term ) {
 
-		if ( $post instanceof \WP_Post && 'srf-resources' === $post->post_type ) {
-			$cats = get_the_terms( $post->ID, 'srf-resources-category' );
+					// The featured resource will have another category which is the main one.
+					if ( 'featured' === $term->slug ) {
+						continue;
+					}
 
-			if ( $cats && is_array( $cats ) ) {
-				$cat_slug = current( $cats )->slug;
-				$link     = str_replace( '%srf-resources-category%', $cat_slug, $link );
-			} else {
-				$link = str_replace( '%srf-resources-category%', 'uncategorized', $link );
+					$term_slug = $term->slug;
+					break;
+				}
 			}
+			$permalink = get_home_url() . '/resources/' . $term_slug . '/' . $post->post_name;
+		}
+		return $permalink;
+	}
+
+	/**
+	 * Attempts to fix pagination for taxonomy permalinks.
+	 *
+	 * @since 2018-08-22
+	 *
+	 * @param  $wp_rewrite Rewrite rules array.
+	 *
+	 * @return void
+	 */
+	public function custom_rewrite_rules( $wp_rewrite ) : void {
+		$rules = array();
+		$terms = get_terms(
+			array(
+				'taxonomy'   => 'srf-resources-category',
+				'hide_empty' => false,
+			)
+		);
+
+		$post_type = 'srf-resources';
+
+		foreach ( $terms as $term ) {
+
+			$rules[ 'resources/' . $term->slug . '/([^/]*)$' ] = 'index.php?post_type=' . $post_type . '&srf-resources=$matches[1]&name=$matches[1]';
+
 		}
 
-		return $link;
+		// merge with global rules.
+		$wp_rewrite->rules = $rules + $wp_rewrite->rules;
 	}
 }
 SRF_Resources::get_instance()->init();
