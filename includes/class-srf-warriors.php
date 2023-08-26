@@ -113,7 +113,7 @@ class SRF_Warriors {
 			'can_export'          => true,
 			'rewrite'             => array(
 				'with_front' => false,
-				'slug'       => 'warriors',
+				'slug'       => 'syngap-warriors',
 			),
 			'capability_type'     => 'post',
 			'supports'            => array(
