@@ -182,6 +182,7 @@ class SRF_Team {
 			'show_in_rest'      => true,
 			'sort'              => true,
 			'rewrite'           => array(
+				'with_front' => false,
 				'slug' => 'team',
 			),
 		);
