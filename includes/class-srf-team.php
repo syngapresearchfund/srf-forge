@@ -102,7 +102,7 @@ class SRF_Team {
 			'labels'              => $labels,
 			'description'         => 'SRF Team',
 			'menu_icon'           => 'dashicons-groups',
-			'menu_position'       => 20, // After Pages.
+			'menu_position'       => 21, // After Warriors.
 			'hierarchical'        => false,
 			'public'              => true,
 			'show_ui'             => true,

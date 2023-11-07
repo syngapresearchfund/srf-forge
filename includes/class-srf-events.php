@@ -101,7 +101,7 @@ class SRF_Events {
 			'labels'              => $labels,
 			'description'         => 'SRF Events',
 			'menu_icon'           => 'dashicons-tickets',
-			'menu_position'       => 21, // After People.
+			'menu_position'       => 23, // After Resources.
 			'hierarchical'        => false,
 			'public'              => true,
 			'show_ui'             => true,

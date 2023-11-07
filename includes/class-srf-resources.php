@@ -102,7 +102,7 @@ class SRF_Resources {
 			'labels'              => $labels,
 			'description'         => 'SRF Resources',
 			'menu_icon'           => 'dashicons-networking',
-			'menu_position'       => 22, // After Events.
+			'menu_position'       => 22, // After Team.
 			'hierarchical'        => false,
 			'public'              => true,
 			'show_ui'             => true,
