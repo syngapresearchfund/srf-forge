@@ -68,6 +68,7 @@ class SRF_Podcasts {
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
 
 		add_filter( 'post_type_link', array( $this, 'modify_permalinks' ), 10, 2 );
+		add_action( 'generate_rewrite_rules', array( $this, 'custom_rewrite_rules' ) );
 	}
 
 	/**
@@ -101,7 +102,7 @@ class SRF_Podcasts {
 			'labels'              => $labels,
 			'description'         => 'SRF Podcasts',
 			'menu_icon'           => 'dashicons-microphone',
-			'menu_position'       => 24, // After Events.
+			'menu_position'       => 22, // After Team.
 			'hierarchical'        => false,
 			'public'              => true,
 			'show_ui'             => true,
@@ -114,10 +115,7 @@ class SRF_Podcasts {
 			'has_archive'         => true,
 			'query_var'           => true,
 			'can_export'          => true,
-			'rewrite'             => array(
-				'with_front' => false,
-				'slug'       => 'podcasts/%srf-podcasts-category%',
-			),
+			'rewrite'             => true,
 			'taxonomies'          => array(
 				'srf-podcasts-category',
 			),
@@ -146,7 +144,7 @@ class SRF_Podcasts {
 			'name'                       => 'SRF Podcast Categories',
 			'singular_name'              => 'SRF Podcast Category',
 
-			'name_admin_bar'             => 'SRF Podcasts Category',
+			'name_admin_bar'             => 'SRF Podcast Category',
 			'menu_name'                  => 'Podcast Categories',
 
 			'all_items'                  => 'All Podcast Categories',
@@ -174,7 +172,7 @@ class SRF_Podcasts {
 		);
 		$args   = array(
 			'labels'            => $labels,
-			'description'       => 'SRF Podcast Categories',
+			'description'       => 'SRF Podcasts Categories',
 			'hierarchical'      => true,
 			'public'            => true,
 			'show_ui'           => true,
@@ -183,6 +181,10 @@ class SRF_Podcasts {
 			'show_admin_column' => true,
 			'show_in_rest'      => true,
 			'sort'              => true,
+			'rewrite'           => array(
+				'with_front' => false,
+				'slug' => 'podcasts',
+			),
 		);
 		register_taxonomy(
 			'srf-podcasts-category',
@@ -196,26 +198,60 @@ class SRF_Podcasts {
 	 *
 	 * @since 2018-08-22
 	 *
-	 * @param  string   $link Link.
+	 * @param  string   $permalink Link.
 	 * @param  \WP_Post $post Post object.
 	 *
 	 * @return string         Modified link.
 	 */
-	public function modify_permalinks( $link, $post ) : string {
-		$link = (string) $link;
+	public function modify_permalinks( $permalink, $post ) : string {
+		if ( 'srf-podcasts' === $post->post_type ) {
+			$podcast_terms = get_the_terms( $post, 'srf-podcasts-category' );
+			$term_slug      = '';
+			if ( ! empty( $podcast_terms ) ) {
+				foreach ( $podcast_terms as $term ) {
 
-		if ( $post instanceof \WP_Post && 'srf-podcasts' === $post->post_type ) {
-			$cats = get_the_terms( $post->ID, 'srf-podcasts-category' );
+					// The featured podcast will have another category which is the main one.
+					if ( 'featured' === $term->slug ) {
+						continue;
+					}
 
-			if ( $cats && is_array( $cats ) ) {
-				$cat_slug = current( $cats )->slug;
-				$link     = str_replace( '%srf-podcasts-category%', $cat_slug, $link );
-			} else {
-				$link = str_replace( '%srf-podcasts-category%', 'uncategorized', $link );
+					$term_slug = $term->slug;
+					break;
+				}
 			}
+			$permalink = get_home_url() . '/podcasts/' . $term_slug . '/' . $post->post_name;
+		}
+		return $permalink;
+	}
+
+	/**
+	 * Attempts to fix pagination for taxonomy permalinks.
+	 *
+	 * @since 2018-08-22
+	 *
+	 * @param  $wp_rewrite Rewrite rules array.
+	 *
+	 * @return void
+	 */
+	public function custom_rewrite_rules( $wp_rewrite ) : void {
+		$rules = array();
+		$terms = get_terms(
+			array(
+				'taxonomy'   => 'srf-podcasts-category',
+				'hide_empty' => false,
+			)
+		);
+
+		$post_type = 'srf-podcasts';
+
+		foreach ( $terms as $term ) {
+
+			$rules[ 'podcasts/' . $term->slug . '/([^/]*)$' ] = 'index.php?post_type=' . $post_type . '&srf-podcasts=$matches[1]&name=$matches[1]';
+
 		}
 
-		return $link;
+		// merge with global rules.
+		$wp_rewrite->rules = $rules + $wp_rewrite->rules;
 	}
 }
 SRF_Podcasts::get_instance()->init();
