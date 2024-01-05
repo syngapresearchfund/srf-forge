@@ -248,9 +248,10 @@ class SRF_Warriors {
 
 			$rules[ 'syngap-warriors/' . $term->slug . '/([^/]*)$' ] = 'index.php?post_type=' . $post_type . '&srf-warriors=$matches[1]&name=$matches[1]';
 
+			// Allow archive page to display posts.
+			$rules[ 'syngap-warriors/(.+)/page/?([0-9]{1,})/?$' ] = 'index.php?taxonomy=srf-warriors-category&term=' . $wp_rewrite->preg_index(1) . '&paged=' . $wp_rewrite->preg_index(2);
+			$rules[ 'syngap-warriors/(.+)/?$' ] = 'index.php?taxonomy=srf-warriors-category&term=' . $wp_rewrite->preg_index(1);
 		}
-		// Allow archive page to display posts.
-		$rules[ 'syngap-warriors/(.+)/?$' ] = 'index.php?taxonomy=srf-warriors-category&term=' . $wp_rewrite->preg_index(1);
 
 		// Merge with global rules.
 		$wp_rewrite->rules = $rules + $wp_rewrite->rules;
