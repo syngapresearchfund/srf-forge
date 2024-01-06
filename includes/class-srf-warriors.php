@@ -213,7 +213,7 @@ class SRF_Warriors {
 					// break;
 				}
 			}
-			$permalink = get_home_url() . '/syngap-warriors/' . $term_slug . '/' . $post->post_name;
+			$permalink = get_home_url() . '/syngap-warriors/' . ( $term_slug ? $term_slug . '/' : '' ) . $post->post_name;
 		}
 		return $permalink;
 	}
