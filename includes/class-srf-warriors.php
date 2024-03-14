@@ -41,7 +41,7 @@ class SRF_Warriors {
 	 *
 	 * @since 2021-09-21
 	 */
-	public static function get_instance() : self {
+	public static function get_instance(): self {
 		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
@@ -54,10 +54,8 @@ class SRF_Warriors {
 	 *
 	 * @since 2021-09-21
 	 */
-	public function init() : void {
-		if ( ! function_exists( 'register_block_type' ) ) {
-			return; // The block editor is not supported.
-		} elseif ( $this->did_init ) {
+	public function init(): void {
+		if ( $this->did_init ) {
 			return; // Already initialized.
 		}
 
@@ -72,26 +70,26 @@ class SRF_Warriors {
 	 *
 	 * @since 2021-19-21
 	 */
-	public function register_post_type() : void {
+	public function register_post_type(): void {
 		$labels = array(
-			'name'               => 'SRF Warriors',
-			'singular_name'      => 'SRF Warrior',
+			'name'          => 'SRF Warriors',
+			'singular_name' => 'SRF Warrior',
 
-			'name_admin_bar'     => 'SRF Warrior',
-			'menu_name'          => 'SRF Warriors',
+			'name_admin_bar' => 'SRF Warrior',
+			'menu_name'      => 'SRF Warriors',
 
-			'all_items'          => 'All SRF Warriors',
-			'add_new'            => 'Add SRF Warrior',
-			'add_new_item'       => 'Add New SRF Warrior',
-			'new_item'           => 'New SRF Warrior',
-			'edit_item'          => 'Edit SRF Warrior',
-			'view_item'          => 'View SRF Warrior',
+			'all_items'    => 'All SRF Warriors',
+			'add_new'      => 'Add SRF Warrior',
+			'add_new_item' => 'Add New SRF Warrior',
+			'new_item'     => 'New SRF Warrior',
+			'edit_item'    => 'Edit SRF Warrior',
+			'view_item'    => 'View SRF Warrior',
 
 			'search_items'       => 'Search SRF Warriors',
 			'not_found'          => 'No SRF Warriors Found',
 			'not_found_in_trash' => 'No SRF Warriors Found in Trash',
 
-			'parent_item_colon'  => 'Parent SRF Warrior:',
+			'parent_item_colon' => 'Parent SRF Warrior:',
 		);
 
 		$args = array(
@@ -130,4 +128,5 @@ class SRF_Warriors {
 		register_post_type( 'srf-warriors', $args );
 	}
 }
+
 SRF_Warriors::get_instance()->init();

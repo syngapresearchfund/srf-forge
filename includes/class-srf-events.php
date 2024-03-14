@@ -8,6 +8,8 @@
 
 namespace SRF_Events;
 
+use WP_Post;
+
 class SRF_Events {
 	/**
 	 * Singleton instance.
@@ -41,7 +43,7 @@ class SRF_Events {
 	 *
 	 * @since 2021-09-21
 	 */
-	public static function get_instance() : self {
+	public static function get_instance(): self {
 		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
@@ -54,10 +56,8 @@ class SRF_Events {
 	 *
 	 * @since 2021-09-21
 	 */
-	public function init() : void {
-		if ( ! function_exists( 'register_block_type' ) ) {
-			return; // The block editor is not supported.
-		} elseif ( $this->did_init ) {
+	public function init(): void {
+		if ( $this->did_init ) {
 			return; // Already initialized.
 		}
 
@@ -75,26 +75,26 @@ class SRF_Events {
 	 *
 	 * @since 2021-19-21
 	 */
-	public function register_post_type() : void {
+	public function register_post_type(): void {
 		$labels = array(
-			'name'               => 'SRF Events',
-			'singular_name'      => 'SRF Event',
+			'name'          => 'SRF Events',
+			'singular_name' => 'SRF Event',
 
-			'name_admin_bar'     => 'SRF Event',
-			'menu_name'          => 'SRF Events',
+			'name_admin_bar' => 'SRF Event',
+			'menu_name'      => 'SRF Events',
 
-			'all_items'          => 'All SRF Events',
-			'add_new'            => 'Add SRF Event',
-			'add_new_item'       => 'Add New SRF Event',
-			'new_item'           => 'New SRF Event',
-			'edit_item'          => 'Edit SRF Event',
-			'view_item'          => 'View SRF Event',
+			'all_items'    => 'All SRF Events',
+			'add_new'      => 'Add SRF Event',
+			'add_new_item' => 'Add New SRF Event',
+			'new_item'     => 'New SRF Event',
+			'edit_item'    => 'Edit SRF Event',
+			'view_item'    => 'View SRF Event',
 
 			'search_items'       => 'Search SRF Events',
 			'not_found'          => 'No SRF Events Found',
 			'not_found_in_trash' => 'No SRF Events Found in Trash',
 
-			'parent_item_colon'  => 'Parent SRF Event:',
+			'parent_item_colon' => 'Parent SRF Event:',
 		);
 
 		$args = array(
@@ -141,36 +141,36 @@ class SRF_Events {
 	 *
 	 * @since 2021-19-21
 	 */
-	public function register_taxonomies() : void {
+	public function register_taxonomies(): void {
 		$labels = array(
-			'name'                       => 'SRF Event Categories',
-			'singular_name'              => 'SRF Event Category',
+			'name'          => 'SRF Event Categories',
+			'singular_name' => 'SRF Event Category',
 
-			'name_admin_bar'             => 'SRF Events Category',
-			'menu_name'                  => 'Event Categories',
+			'name_admin_bar' => 'SRF Events Category',
+			'menu_name'      => 'Event Categories',
 
-			'all_items'                  => 'All Event Categories',
-			'add_new_item'               => 'Add New Event Category',
-			'new_item_name'              => 'New Event Category Name',
-			'add_or_remove_items'        => 'Add or Remove Event Categories',
-			'view_item'                  => 'View Event Category',
-			'edit_item'                  => 'Edit Event Category',
-			'update_item'                => 'Update Event Category',
+			'all_items'           => 'All Event Categories',
+			'add_new_item'        => 'Add New Event Category',
+			'new_item_name'       => 'New Event Category Name',
+			'add_or_remove_items' => 'Add or Remove Event Categories',
+			'view_item'           => 'View Event Category',
+			'edit_item'           => 'Edit Event Category',
+			'update_item'         => 'Update Event Category',
 
-			'search_items'               => 'Search Event Categories',
-			'not_found'                  => 'No Event Categories Found',
-			'no_terms'                   => 'No Event Categories',
+			'search_items' => 'Search Event Categories',
+			'not_found'    => 'No Event Categories Found',
+			'no_terms'     => 'No Event Categories',
 
 			'choose_from_most_used'      => 'Choose From the Most Used Event Categories',
 			'separate_items_with_commas' => 'Separate Event Categories w/ Commas',
 
-			'items_list'                 => 'Event Categories List',
-			'items_list_navigation'      => 'Event Categories List Navigation',
+			'items_list'            => 'Event Categories List',
+			'items_list_navigation' => 'Event Categories List Navigation',
 
-			'archives'                   => 'All Event Categories',
-			'popular_items'              => 'Popular Event Categories',
-			'parent_item'                => 'Parent Event Category',
-			'parent_item_colon'          => 'Parent Event Category:',
+			'archives'          => 'All Event Categories',
+			'popular_items'     => 'Popular Event Categories',
+			'parent_item'       => 'Parent Event Category',
+			'parent_item_colon' => 'Parent Event Category:',
 		);
 		$args   = array(
 			'labels'            => $labels,
@@ -194,17 +194,17 @@ class SRF_Events {
 	/**
 	 * Modifies permalinks.
 	 *
-	 * @since 2018-08-22
-	 *
-	 * @param  string   $link Link.
-	 * @param  \WP_Post $post Post object.
+	 * @param string $link Link.
+	 * @param WP_Post $post Post object.
 	 *
 	 * @return string         Modified link.
+	 * @since 2018-08-22
+	 *
 	 */
-	public function modify_permalinks( $link, $post ) : string {
+	public function modify_permalinks( $link, $post ): string {
 		$link = (string) $link;
 
-		if ( $post instanceof \WP_Post && 'srf-events' === $post->post_type ) {
+		if ( $post instanceof WP_Post && 'srf-events' === $post->post_type ) {
 			$cats = get_the_terms( $post->ID, 'srf-events-category' );
 
 			if ( $cats && is_array( $cats ) ) {
@@ -218,4 +218,5 @@ class SRF_Events {
 		return $link;
 	}
 }
+
 SRF_Events::get_instance()->init();

@@ -8,6 +8,8 @@
 
 namespace SRF_Team;
 
+use WP_Post;
+
 class SRF_Team {
 	/**
 	 * Singleton instance.
@@ -41,7 +43,7 @@ class SRF_Team {
 	 *
 	 * @since 2021-09-21
 	 */
-	public static function get_instance() : self {
+	public static function get_instance(): self {
 		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
@@ -54,10 +56,8 @@ class SRF_Team {
 	 *
 	 * @since 2021-09-21
 	 */
-	public function init() : void {
-		if ( ! function_exists( 'register_block_type' ) ) {
-			return; // The block editor is not supported.
-		} elseif ( $this->did_init ) {
+	public function init(): void {
+		if ( $this->did_init ) {
 			return; // Already initialized.
 		}
 
@@ -76,26 +76,26 @@ class SRF_Team {
 	 *
 	 * @since 2021-19-21
 	 */
-	public function register_post_type() : void {
+	public function register_post_type(): void {
 		$labels = array(
-			'name'               => 'SRF Team',
-			'singular_name'      => 'SRF Team Member',
+			'name'          => 'SRF Team',
+			'singular_name' => 'SRF Team Member',
 
-			'name_admin_bar'     => 'SRF Team Member',
-			'menu_name'          => 'SRF Team',
+			'name_admin_bar' => 'SRF Team Member',
+			'menu_name'      => 'SRF Team',
 
-			'all_items'          => 'All SRF Team',
-			'add_new'            => 'Add SRF Team Member',
-			'add_new_item'       => 'Add New SRF Team Member',
-			'new_item'           => 'New SRF Team Member',
-			'edit_item'          => 'Edit SRF Team Member',
-			'view_item'          => 'View SRF Team Member',
+			'all_items'    => 'All SRF Team',
+			'add_new'      => 'Add SRF Team Member',
+			'add_new_item' => 'Add New SRF Team Member',
+			'new_item'     => 'New SRF Team Member',
+			'edit_item'    => 'Edit SRF Team Member',
+			'view_item'    => 'View SRF Team Member',
 
 			'search_items'       => 'Search SRF Team',
 			'not_found'          => 'No SRF Team Found',
 			'not_found_in_trash' => 'No SRF Team Found in Trash',
 
-			'parent_item_colon'  => 'Parent SRF Team Member:',
+			'parent_item_colon' => 'Parent SRF Team Member:',
 		);
 
 		$args = array(
@@ -139,36 +139,36 @@ class SRF_Team {
 	 *
 	 * @since 2021-19-21
 	 */
-	public function register_taxonomies() : void {
+	public function register_taxonomies(): void {
 		$labels = array(
-			'name'                       => 'SRF Team Categories',
-			'singular_name'              => 'SRF Team Category',
+			'name'          => 'SRF Team Categories',
+			'singular_name' => 'SRF Team Category',
 
-			'name_admin_bar'             => 'SRF Team Category',
-			'menu_name'                  => 'Team Categories',
+			'name_admin_bar' => 'SRF Team Category',
+			'menu_name'      => 'Team Categories',
 
-			'all_items'                  => 'All Team Categories',
-			'add_new_item'               => 'Add New Team Category',
-			'new_item_name'              => 'New Team Category Name',
-			'add_or_remove_items'        => 'Add or Remove Team Categories',
-			'view_item'                  => 'View Team Category',
-			'edit_item'                  => 'Edit Team Category',
-			'update_item'                => 'Update Team Category',
+			'all_items'           => 'All Team Categories',
+			'add_new_item'        => 'Add New Team Category',
+			'new_item_name'       => 'New Team Category Name',
+			'add_or_remove_items' => 'Add or Remove Team Categories',
+			'view_item'           => 'View Team Category',
+			'edit_item'           => 'Edit Team Category',
+			'update_item'         => 'Update Team Category',
 
-			'search_items'               => 'Search Team Categories',
-			'not_found'                  => 'No Team Categories Found',
-			'no_terms'                   => 'No Team Categories',
+			'search_items' => 'Search Team Categories',
+			'not_found'    => 'No Team Categories Found',
+			'no_terms'     => 'No Team Categories',
 
 			'choose_from_most_used'      => 'Choose From the Most Used Team Categories',
 			'separate_items_with_commas' => 'Separate Team Categories w/ Commas',
 
-			'items_list'                 => 'Team Categories List',
-			'items_list_navigation'      => 'Team Categories List Navigation',
+			'items_list'            => 'Team Categories List',
+			'items_list_navigation' => 'Team Categories List Navigation',
 
-			'archives'                   => 'All Team Categories',
-			'popular_items'              => 'Popular Team Categories',
-			'parent_item'                => 'Parent Team Category',
-			'parent_item_colon'          => 'Parent Team Category:',
+			'archives'          => 'All Team Categories',
+			'popular_items'     => 'Popular Team Categories',
+			'parent_item'       => 'Parent Team Category',
+			'parent_item_colon' => 'Parent Team Category:',
 		);
 		$args   = array(
 			'labels'            => $labels,
@@ -183,7 +183,7 @@ class SRF_Team {
 			'sort'              => true,
 			'rewrite'           => array(
 				'with_front' => false,
-				'slug' => 'team',
+				'slug'       => 'team',
 			),
 		);
 		register_taxonomy(
@@ -196,14 +196,14 @@ class SRF_Team {
 	/**
 	 * Modifies permalinks.
 	 *
-	 * @since 2018-08-22
-	 *
-	 * @param  string   $permalink Link.
-	 * @param  \WP_Post $post Post object.
+	 * @param string $permalink Link.
+	 * @param WP_Post $post Post object.
 	 *
 	 * @return string         Modified link.
+	 * @since 2018-08-22
+	 *
 	 */
-	public function modify_permalinks( $permalink, $post ) : string {
+	public function modify_permalinks( $permalink, $post ): string {
 		if ( 'srf-team' === $post->post_type ) {
 			$resource_terms = get_the_terms( $post, 'srf-team-category' );
 			$term_slug      = '';
@@ -221,19 +221,20 @@ class SRF_Team {
 			}
 			$permalink = get_home_url() . '/team/' . $term_slug . '/' . $post->post_name;
 		}
+
 		return $permalink;
 	}
 
 	/**
 	 * Attempts to fix pagination for taxonomy permalinks.
 	 *
-	 * @since 2018-08-22
-	 *
 	 * @param  $wp_rewrite Rewrite rules array.
 	 *
 	 * @return void
+	 * @since 2018-08-22
+	 *
 	 */
-	public function custom_rewrite_rules( $wp_rewrite ) : void {
+	public function custom_rewrite_rules( $wp_rewrite ): void {
 		$rules = array();
 		$terms = get_terms(
 			array(
@@ -254,4 +255,5 @@ class SRF_Team {
 		$wp_rewrite->rules = $rules + $wp_rewrite->rules;
 	}
 }
+
 SRF_Team::get_instance()->init();

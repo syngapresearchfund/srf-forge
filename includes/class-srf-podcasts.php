@@ -8,6 +8,8 @@
 
 namespace SRF_Podcasts;
 
+use WP_Post;
+
 class SRF_Podcasts {
 	/**
 	 * Singleton instance.
@@ -41,7 +43,7 @@ class SRF_Podcasts {
 	 *
 	 * @since 2021-09-21
 	 */
-	public static function get_instance() : self {
+	public static function get_instance(): self {
 		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
@@ -54,10 +56,8 @@ class SRF_Podcasts {
 	 *
 	 * @since 2021-09-21
 	 */
-	public function init() : void {
-		if ( ! function_exists( 'register_block_type' ) ) {
-			return; // The block editor is not supported.
-		} elseif ( $this->did_init ) {
+	public function init(): void {
+		if ( $this->did_init ) {
 			return; // Already initialized.
 		}
 
@@ -76,26 +76,26 @@ class SRF_Podcasts {
 	 *
 	 * @since 2021-19-21
 	 */
-	public function register_post_type() : void {
+	public function register_post_type(): void {
 		$labels = array(
-			'name'               => 'SRF Podcasts',
-			'singular_name'      => 'SRF Podcast',
+			'name'          => 'SRF Podcasts',
+			'singular_name' => 'SRF Podcast',
 
-			'name_admin_bar'     => 'SRF Podcast',
-			'menu_name'          => 'SRF Podcasts',
+			'name_admin_bar' => 'SRF Podcast',
+			'menu_name'      => 'SRF Podcasts',
 
-			'all_items'          => 'All SRF Podcasts',
-			'add_new'            => 'Add SRF Podcast',
-			'add_new_item'       => 'Add New SRF Podcast',
-			'new_item'           => 'New SRF Podcast',
-			'edit_item'          => 'Edit SRF Podcast',
-			'view_item'          => 'View SRF Podcast',
+			'all_items'    => 'All SRF Podcasts',
+			'add_new'      => 'Add SRF Podcast',
+			'add_new_item' => 'Add New SRF Podcast',
+			'new_item'     => 'New SRF Podcast',
+			'edit_item'    => 'Edit SRF Podcast',
+			'view_item'    => 'View SRF Podcast',
 
 			'search_items'       => 'Search SRF Podcasts',
 			'not_found'          => 'No SRF Podcasts Found',
 			'not_found_in_trash' => 'No SRF Podcasts Found in Trash',
 
-			'parent_item_colon'  => 'Parent SRF Podcast:',
+			'parent_item_colon' => 'Parent SRF Podcast:',
 		);
 
 		$args = array(
@@ -139,36 +139,36 @@ class SRF_Podcasts {
 	 *
 	 * @since 2021-19-21
 	 */
-	public function register_taxonomies() : void {
+	public function register_taxonomies(): void {
 		$labels = array(
-			'name'                       => 'SRF Podcast Categories',
-			'singular_name'              => 'SRF Podcast Category',
+			'name'          => 'SRF Podcast Categories',
+			'singular_name' => 'SRF Podcast Category',
 
-			'name_admin_bar'             => 'SRF Podcast Category',
-			'menu_name'                  => 'Podcast Categories',
+			'name_admin_bar' => 'SRF Podcast Category',
+			'menu_name'      => 'Podcast Categories',
 
-			'all_items'                  => 'All Podcast Categories',
-			'add_new_item'               => 'Add New Podcast Category',
-			'new_item_name'              => 'New Podcast Category Name',
-			'add_or_remove_items'        => 'Add or Remove Podcast Categories',
-			'view_item'                  => 'View Podcast Category',
-			'edit_item'                  => 'Edit Podcast Category',
-			'update_item'                => 'Update Podcast Category',
+			'all_items'           => 'All Podcast Categories',
+			'add_new_item'        => 'Add New Podcast Category',
+			'new_item_name'       => 'New Podcast Category Name',
+			'add_or_remove_items' => 'Add or Remove Podcast Categories',
+			'view_item'           => 'View Podcast Category',
+			'edit_item'           => 'Edit Podcast Category',
+			'update_item'         => 'Update Podcast Category',
 
-			'search_items'               => 'Search Podcast Categories',
-			'not_found'                  => 'No Podcast Categories Found',
-			'no_terms'                   => 'No Podcast Categories',
+			'search_items' => 'Search Podcast Categories',
+			'not_found'    => 'No Podcast Categories Found',
+			'no_terms'     => 'No Podcast Categories',
 
 			'choose_from_most_used'      => 'Choose From the Most Used Podcast Categories',
 			'separate_items_with_commas' => 'Separate Podcast Categories w/ Commas',
 
-			'items_list'                 => 'Podcast Categories List',
-			'items_list_navigation'      => 'Podcast Categories List Navigation',
+			'items_list'            => 'Podcast Categories List',
+			'items_list_navigation' => 'Podcast Categories List Navigation',
 
-			'archives'                   => 'All Podcast Categories',
-			'popular_items'              => 'Popular Podcast Categories',
-			'parent_item'                => 'Parent Podcast Category',
-			'parent_item_colon'          => 'Parent Podcast Category:',
+			'archives'          => 'All Podcast Categories',
+			'popular_items'     => 'Popular Podcast Categories',
+			'parent_item'       => 'Parent Podcast Category',
+			'parent_item_colon' => 'Parent Podcast Category:',
 		);
 		$args   = array(
 			'labels'            => $labels,
@@ -183,7 +183,7 @@ class SRF_Podcasts {
 			'sort'              => true,
 			'rewrite'           => array(
 				'with_front' => false,
-				'slug' => 'podcasts',
+				'slug'       => 'podcasts',
 			),
 		);
 		register_taxonomy(
@@ -196,17 +196,17 @@ class SRF_Podcasts {
 	/**
 	 * Modifies permalinks.
 	 *
-	 * @since 2018-08-22
-	 *
-	 * @param  string   $permalink Link.
-	 * @param  \WP_Post $post Post object.
+	 * @param string $permalink Link.
+	 * @param WP_Post $post Post object.
 	 *
 	 * @return string         Modified link.
+	 * @since 2018-08-22
+	 *
 	 */
-	public function modify_permalinks( $permalink, $post ) : string {
+	public function modify_permalinks( $permalink, $post ): string {
 		if ( 'srf-podcasts' === $post->post_type ) {
 			$podcast_terms = get_the_terms( $post, 'srf-podcasts-category' );
-			$term_slug      = '';
+			$term_slug     = '';
 			if ( ! empty( $podcast_terms ) ) {
 				foreach ( $podcast_terms as $term ) {
 
@@ -221,19 +221,20 @@ class SRF_Podcasts {
 			}
 			$permalink = get_home_url() . '/podcasts/' . $term_slug . '/' . $post->post_name;
 		}
+
 		return $permalink;
 	}
 
 	/**
 	 * Attempts to fix pagination for taxonomy permalinks.
 	 *
-	 * @since 2018-08-22
-	 *
 	 * @param  $wp_rewrite Rewrite rules array.
 	 *
 	 * @return void
+	 * @since 2018-08-22
+	 *
 	 */
-	public function custom_rewrite_rules( $wp_rewrite ) : void {
+	public function custom_rewrite_rules( $wp_rewrite ): void {
 		$rules = array();
 		$terms = get_terms(
 			array(
@@ -254,4 +255,5 @@ class SRF_Podcasts {
 		$wp_rewrite->rules = $rules + $wp_rewrite->rules;
 	}
 }
+
 SRF_Podcasts::get_instance()->init();

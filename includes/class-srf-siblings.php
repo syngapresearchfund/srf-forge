@@ -41,7 +41,7 @@ class SRF_Siblings {
 	 *
 	 * @since 2021-09-21
 	 */
-	public static function get_instance() : self {
+	public static function get_instance(): self {
 		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
@@ -54,10 +54,8 @@ class SRF_Siblings {
 	 *
 	 * @since 2021-09-21
 	 */
-	public function init() : void {
-		if ( ! function_exists( 'register_block_type' ) ) {
-			return; // The block editor is not supported.
-		} elseif ( $this->did_init ) {
+	public function init(): void {
+		if ( $this->did_init ) {
 			return; // Already initialized.
 		}
 
@@ -72,26 +70,26 @@ class SRF_Siblings {
 	 *
 	 * @since 2021-19-21
 	 */
-	public function register_post_type() : void {
+	public function register_post_type(): void {
 		$labels = array(
-			'name'               => 'Syngap Siblings',
-			'singular_name'      => 'Syngap Sibling',
+			'name'          => 'Syngap Siblings',
+			'singular_name' => 'Syngap Sibling',
 
-			'name_admin_bar'     => 'Syngap Sibling',
-			'menu_name'          => 'Syngap Siblings',
+			'name_admin_bar' => 'Syngap Sibling',
+			'menu_name'      => 'Syngap Siblings',
 
-			'all_items'          => 'Syngap Siblings',
-			'add_new'            => 'Add Syngap Sibling',
-			'add_new_item'       => 'Add New Syngap Sibling',
-			'new_item'           => 'New Syngap Sibling',
-			'edit_item'          => 'Edit Syngap Sibling',
-			'view_item'          => 'View Syngap Sibling',
+			'all_items'    => 'Syngap Siblings',
+			'add_new'      => 'Add Syngap Sibling',
+			'add_new_item' => 'Add New Syngap Sibling',
+			'new_item'     => 'New Syngap Sibling',
+			'edit_item'    => 'Edit Syngap Sibling',
+			'view_item'    => 'View Syngap Sibling',
 
 			'search_items'       => 'Search Syngap Siblings',
 			'not_found'          => 'No Syngap Siblings Found',
 			'not_found_in_trash' => 'No Syngap Siblings Found in Trash',
 
-			'parent_item_colon'  => 'Parent Syngap Sibling:',
+			'parent_item_colon' => 'Parent Syngap Sibling:',
 		);
 
 		$args = array(
@@ -130,4 +128,5 @@ class SRF_Siblings {
 		register_post_type( 'srf-siblings', $args );
 	}
 }
+
 SRF_Siblings::get_instance()->init();
