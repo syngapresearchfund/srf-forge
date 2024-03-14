@@ -65,7 +65,9 @@ class SRF_Team {
 		$this->did_init = true;
 
 		add_action( 'init', array( $this, 'register_post_type' ) );
-		add_action( 'init', array( $this, 'register_taxonomies' ) );
+		add_action( 'init', array( $this, 'register_team_category_tax' ) );
+		add_action( 'init', array( $this, 'register_state_reps_tax' ) );
+		add_action( 'init', array( $this, 'register_state_advocates_tax' ) );
 
 		add_filter( 'post_type_link', array( $this, 'modify_permalinks' ), 10, 2 );
 		add_action( 'generate_rewrite_rules', array( $this, 'custom_rewrite_rules' ) );
@@ -135,11 +137,11 @@ class SRF_Team {
 	}
 
 	/**
-	 * Registers SRF Team custom taxonomies.
+	 * Registers SRF Team Category taxonomy.
 	 *
 	 * @since 2021-19-21
 	 */
-	public function register_taxonomies(): void {
+	public function register_team_category_tax(): void {
 		$labels = array(
 			'name'          => 'SRF Team Categories',
 			'singular_name' => 'SRF Team Category',
@@ -188,6 +190,124 @@ class SRF_Team {
 		);
 		register_taxonomy(
 			'srf-team-category',
+			'srf-team',
+			$args
+		);
+	}
+
+	/**
+	 * Registers State Representatives taxonomy.
+	 *
+	 * @since 2021-19-21
+	 */
+	public function register_state_reps_tax(): void {
+		$labels = array(
+			'name'          => 'SRF State Reps',
+			'singular_name' => 'SRF State Rep',
+
+			'name_admin_bar' => 'SRF State Rep',
+			'menu_name'      => 'State Reps',
+
+			'all_items'           => 'All State Reps',
+			'add_new_item'        => 'Add New State Rep',
+			'new_item_name'       => 'New State Rep Name',
+			'add_or_remove_items' => 'Add or Remove State Reps',
+			'view_item'           => 'View State Rep',
+			'edit_item'           => 'Edit State Rep',
+			'update_item'         => 'Update State Rep',
+
+			'search_items' => 'Search State Reps',
+			'not_found'    => 'No State Reps Found',
+			'no_terms'     => 'No State Reps',
+
+			'choose_from_most_used'      => 'Choose From the Most Used State Reps',
+			'separate_items_with_commas' => 'Separate State Reps w/ Commas',
+
+			'items_list'            => 'State Reps List',
+			'items_list_navigation' => 'State Reps List Navigation',
+
+			'archives'          => 'All State Reps',
+			'popular_items'     => 'Popular State Reps',
+			'parent_item'       => 'Parent State Rep',
+			'parent_item_colon' => 'Parent State Rep:',
+		);
+		$args   = array(
+			'labels'            => $labels,
+			'description'       => 'SRF State Reps',
+			'hierarchical'      => true,
+			'public'            => true,
+			'show_ui'           => true,
+			'show_in_menu'      => true,
+			'show_in_nav_menus' => true,
+			'show_admin_column' => true,
+			'show_in_rest'      => true,
+			'sort'              => true,
+			'rewrite'           => array(
+				'with_front' => false,
+				'slug'       => 'team/state-representatives',
+			),
+		);
+		register_taxonomy(
+			'srf-state-reps',
+			'srf-team',
+			$args
+		);
+	}
+
+	/**
+	 * Registers State Advocates taxonomy.
+	 *
+	 * @since 2021-19-21
+	 */
+	public function register_state_advocates_tax(): void {
+		$labels = array(
+			'name'          => 'SRF State Advocates',
+			'singular_name' => 'SRF State Advocate',
+
+			'name_admin_bar' => 'SRF State Advocate',
+			'menu_name'      => 'State Advocates',
+
+			'all_items'           => 'All State Advocates',
+			'add_new_item'        => 'Add New State Advocate',
+			'new_item_name'       => 'New State Advocate Name',
+			'add_or_remove_items' => 'Add or Remove State Advocates',
+			'view_item'           => 'View State Advocate',
+			'edit_item'           => 'Edit State Advocate',
+			'update_item'         => 'Update State Advocate',
+
+			'search_items' => 'Search State Advocates',
+			'not_found'    => 'No State Advocates Found',
+			'no_terms'     => 'No State Advocates',
+
+			'choose_from_most_used'      => 'Choose From the Most Used State Advocates',
+			'separate_items_with_commas' => 'Separate State Advocates w/ Commas',
+
+			'items_list'            => 'State Advocates List',
+			'items_list_navigation' => 'State Advocates List Navigation',
+
+			'archives'          => 'All State Advocates',
+			'popular_items'     => 'Popular State Advocates',
+			'parent_item'       => 'Parent State Advocate',
+			'parent_item_colon' => 'Parent State Advocate:',
+		);
+		$args   = array(
+			'labels'            => $labels,
+			'description'       => 'SRF State Advocates',
+			'hierarchical'      => true,
+			'public'            => true,
+			'show_ui'           => true,
+			'show_in_menu'      => true,
+			'show_in_nav_menus' => true,
+			'show_admin_column' => true,
+			'show_in_rest'      => true,
+			'sort'              => true,
+			'rewrite'           => array(
+				'with_front' => false,
+				'slug'       => 'team/state-advocates',
+			),
+		);
+		register_taxonomy(
+			'srf-state-advocates',
 			'srf-team',
 			$args
 		);
