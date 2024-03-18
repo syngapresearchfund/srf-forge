@@ -67,6 +67,7 @@ class SRF_Team {
 		add_action( 'init', array( $this, 'register_post_type' ) );
 		add_action( 'init', array( $this, 'register_team_category_tax' ) );
 		add_action( 'init', array( $this, 'register_state_ambassadors_tax' ) );
+		add_filter( 'the_title', array( $this, 'ambassador_title_prefix' ), 10, 2 );
 
 		add_filter( 'post_type_link', array( $this, 'modify_permalinks' ), 10, 2 );
 		add_action( 'generate_rewrite_rules', array( $this, 'custom_rewrite_rules' ) );
@@ -251,6 +252,35 @@ class SRF_Team {
 			'srf-team',
 			$args
 		);
+	}
+
+	/**
+	 * Adds prefix to tht post title for ambassadors.
+	 *
+	 * @return string         Modified title.
+	 * @since 2024-03-17 ☘️
+	 */
+	public function ambassador_title_prefix( $title, $post_id ): string {
+		$post         = get_post( $post_id );
+		$current_term = get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) );
+
+		if ( 'srf-team' !== $post->post_type ) {
+			return $title;
+		}
+
+		if ( empty( $current_term->slug ) ) {
+			return $title;
+		}
+
+		if ( 'state-representatives' === $current_term->slug || 'state-advocates' === $current_term->slug ) {
+			$state_ambassadors = get_the_terms( $post, 'srf-state-ambassadors' );
+			if ( ! empty( $state_ambassadors ) ) {
+				$state = $state_ambassadors[0]->name;
+				$title = $state . ' - ' . $title;
+			}
+		}
+
+		return $title;
 	}
 
 	/**
