@@ -71,7 +71,6 @@ class SRF_Events {
 		add_filter( 'post_type_link', array( $this, 'modify_permalinks' ), 10, 2 );
 
 		add_action( 'fm_post_srf-events', array( $this, 'register_event_date_fields' ) );
-		add_action( 'fm_post_srf-resources', array( $this, 'register_event_date_fields' ) );
 	}
 
 	/**
@@ -212,7 +211,6 @@ class SRF_Events {
 		) );
 
 		$event_dates->add_meta_box( esc_html__( 'Event Date', 'srf' ), 'srf-events' );
-		$event_dates->add_meta_box( esc_html__( 'Event Date', 'srf' ), 'srf-resources' );
 	}
 
 	/**
