@@ -10,6 +10,7 @@ namespace SRF_Team;
 
 use Fieldmanager_Select;
 use WP_Post;
+use WP_Query;
 
 class SRF_Team {
 	/**
@@ -132,6 +133,7 @@ class SRF_Team {
 		add_action( 'generate_rewrite_rules', array( $this, 'custom_rewrite_rules' ) );
 
 		add_action( 'fm_post_srf-team', array( $this, 'register_state_ambassador_fields' ) );
+		add_action( 'pre_get_posts', array( $this, 'order_by_state' ), 99 );
 	}
 
 	/**
@@ -273,6 +275,25 @@ class SRF_Team {
 		) );
 
 		$ambassador_states->add_meta_box( esc_html__( 'Ambassador State', 'srf' ), 'srf-team' );
+	}
+
+	/**
+	 * Modifies archive page to order by state meta field.
+	 *
+	 * @param WP_Query $query Query object.
+	 *
+	 * @since 2024-03-23
+	 */
+	public function order_by_state( $query ): void {
+		if ( ! is_admin() && $query->is_main_query() && is_tax( 'srf-team-category', array(
+				'state-representatives',
+				'state-advocates'
+			) ) ) {
+			$query->set( 'posts_per_page', '100' );
+			$query->set( 'meta_key', 'states' );
+			$query->set( 'orderby', 'meta_value' );
+			$query->set( 'order', 'ASC' );
+		}
 	}
 
 	/**
