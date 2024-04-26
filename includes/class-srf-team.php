@@ -8,7 +8,6 @@
 
 namespace SRF_Team;
 
-use Fieldmanager_Select;
 use WP_Post;
 use WP_Query;
 
@@ -30,66 +29,6 @@ class SRF_Team {
 	 * @var bool Initialized?
 	 */
 	private $did_init;
-
-	/**
-	 * State list for state ambassadors.
-	 *
-	 * @since 2024-03-23
-	 *
-	 * @var array State list.
-	 */
-	private $state_list = array(
-		'AL' => 'Alabama',
-		'AK' => 'Alaska',
-		'AZ' => 'Arizona',
-		'AR' => 'Arkansas',
-		'CA' => 'California',
-		'CO' => 'Colorado',
-		'CT' => 'Connecticut',
-		'DE' => 'Delaware',
-		'FL' => 'Florida',
-		'GA' => 'Georgia',
-		'HI' => 'Hawaii',
-		'ID' => 'Idaho',
-		'IL' => 'Illinois',
-		'IN' => 'Indiana',
-		'IA' => 'Iowa',
-		'KS' => 'Kansas',
-		'KY' => 'Kentucky',
-		'LA' => 'Louisiana',
-		'ME' => 'Maine',
-		'MD' => 'Maryland',
-		'MA' => 'Massachusetts',
-		'MI' => 'Michigan',
-		'MN' => 'Minnesota',
-		'MS' => 'Mississippi',
-		'MO' => 'Missouri',
-		'MT' => 'Montana',
-		'NE' => 'Nebraska',
-		'NV' => 'Nevada',
-		'NH' => 'New Hampshire',
-		'NJ' => 'New Jersey',
-		'NM' => 'New Mexico',
-		'NY' => 'New York',
-		'NC' => 'North Carolina',
-		'ND' => 'North Dakota',
-		'OH' => 'Ohio',
-		'OK' => 'Oklahoma',
-		'OR' => 'Oregon',
-		'PA' => 'Pennsylvania',
-		'RI' => 'Rhode Island',
-		'SC' => 'South Carolina',
-		'SD' => 'South Dakota',
-		'TN' => 'Tennessee',
-		'TX' => 'Texas',
-		'UT' => 'Utah',
-		'VT' => 'Vermont',
-		'VA' => 'Virginia',
-		'WA' => 'Washington',
-		'WV' => 'West Virginia',
-		'WI' => 'Wisconsin',
-		'WY' => 'Wyoming',
-	);
 
 	/**
 	 * Private constructor.
@@ -259,25 +198,6 @@ class SRF_Team {
 	}
 
 	/**
-	 * Registers state ambassador custom fields.
-	 *
-	 * @since 2024-03-23
-	 */
-	public function register_state_ambassador_fields(): void {
-		if ( ! class_exists( 'Fieldmanager_Select' ) ) {
-			return; // Fieldmanager not loaded. Bail early.
-		}
-
-		$ambassador_states = new Fieldmanager_Select( array(
-			'name'        => 'states',
-			'first_empty' => true,
-			'options'     => $this->state_list,
-		) );
-
-		$ambassador_states->add_meta_box( esc_html__( 'Ambassador State', 'srf' ), 'srf-team' );
-	}
-
-	/**
 	 * Modifies archive page to order by state meta field.
 	 *
 	 * @param WP_Query $query Query object.
@@ -290,7 +210,7 @@ class SRF_Team {
 				'state-advocates'
 			) ) ) {
 			$query->set( 'posts_per_page', '100' );
-			$query->set( 'meta_key', 'states' );
+			$query->set( 'meta_key', 'ambassador_states' );
 			$query->set( 'orderby', 'meta_value' );
 			$query->set( 'order', 'ASC' );
 		}
