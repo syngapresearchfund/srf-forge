@@ -8,7 +8,6 @@
 
 namespace SRF_Resources;
 
-use Fieldmanager_Datepicker;
 use WP_Post;
 
 class SRF_Resources {
@@ -70,8 +69,6 @@ class SRF_Resources {
 
 		add_filter( 'post_type_link', array( $this, 'modify_permalinks' ), 10, 2 );
 		add_action( 'generate_rewrite_rules', array( $this, 'custom_rewrite_rules' ) );
-
-		add_action( 'fm_post_srf-resources', array( $this, 'register_event_date_fields' ) );
 	}
 
 	/**
@@ -194,25 +191,6 @@ class SRF_Resources {
 			'srf-resources',
 			$args
 		);
-	}
-
-	/**
-	 * Registers Event date custom fields for webinars.
-	 *
-	 * @since 2024-03-22
-	 */
-	public function register_event_date_fields(): void {
-		if ( ! class_exists( 'Fieldmanager_Datepicker' ) ) {
-			return; // Fieldmanager not loaded. Bail early.
-		}
-
-		$event_dates = new Fieldmanager_Datepicker( array(
-			'name'     => 'event_date',
-			'label'    => esc_html__( 'Choose date & time', 'srf' ),
-			'use_time' => true,
-		) );
-
-		$event_dates->add_meta_box( esc_html__( 'Event Date', 'srf' ), 'srf-resources' );
 	}
 
 	/**

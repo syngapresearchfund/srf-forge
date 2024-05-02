@@ -71,7 +71,6 @@ class SRF_Team {
 		add_filter( 'post_type_link', array( $this, 'modify_permalinks' ), 10, 2 );
 		add_action( 'generate_rewrite_rules', array( $this, 'custom_rewrite_rules' ) );
 
-		add_action( 'fm_post_srf-team', array( $this, 'register_state_ambassador_fields' ) );
 		add_action( 'pre_get_posts', array( $this, 'order_by_state' ), 99 );
 	}
 
