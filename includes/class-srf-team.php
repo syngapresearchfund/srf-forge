@@ -205,7 +205,7 @@ class SRF_Team {
 	 */
 	public function order_by_state( $query ): void {
 		if ( ! is_admin() && $query->is_main_query() && is_tax( 'srf-team-category', array(
-				'state-representatives',
+				'state-ambassadors',
 				'state-advocates'
 			) ) ) {
 			$query->set( 'posts_per_page', '100' );
