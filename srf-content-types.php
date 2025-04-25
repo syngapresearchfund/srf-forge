@@ -1,16 +1,16 @@
 <?php
 /**
- * Plugin Name: SRF Content Types
+ * Plugin Name: SRF Forge
  * Plugin URI: https://syngapresearchfund.org/
- * Description: Custom content types for the SRF website
+ * Description: Custom-crafted tools and content types for the SRF website.
  * Author: Daniel W. Robert
  * Author URI: https://dwr.io/
- * Text Domain: srf-content-types
+ * Text Domain: srf-forge
  * Domain Path: /languages
  * Requires WP: 5.6
  * Version: 1.0.0
  *
- * @package SRF\Content_Types
+ * @package srf-forge
  */
 
 // Disable direct file access
@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 // Load text domain
 function srf_load_textdomain() {
 
-	load_plugin_textdomain( 'srf-content-types', false, plugin_dir_path( __FILE__ ) . 'languages/' );
+	load_plugin_textdomain( 'srf-forge', false, plugin_dir_path( __FILE__ ) . 'languages/' );
 
 }
 add_action( 'plugins_loaded', 'srf_load_textdomain' );

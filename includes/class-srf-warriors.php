@@ -3,7 +3,7 @@
  * SRF Warriors Post Type
  *
  * @since 2021-09-21
- * @package srf
+ * @package srf-forge
  */
 
 namespace SRF_Warriors;
