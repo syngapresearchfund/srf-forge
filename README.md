@@ -8,7 +8,7 @@ Custom-crafted tools and content types for the SRF website.
 2. Extract the zip file and upload the `srf-forge` folder to the `wp-content/plugins` directory of your WordPress installation.
 3. Activate the plugin through the WordPress admin dashboard or WP CLI.
 
-## Usage
+## Custom Post Types
 
 ### SRF Warriors
 
