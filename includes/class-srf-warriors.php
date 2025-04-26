@@ -8,63 +8,9 @@
 
 namespace SRF_Warriors;
 
-class SRF_Warriors {
-	/**
-	 * Singleton instance.
-	 *
-	 * @since 2021-09-21
-	 *
-	 * @var self Instance.
-	 */
-	private static $instance = null;
+use SRF_Base\SRF_Post_Type;
 
-	/**
-	 * Has been initialized yet?
-	 *
-	 * @since 2021-09-21
-	 *
-	 * @var bool Initialized?
-	 */
-	private $did_init;
-
-	/**
-	 * Private constructor.
-	 *
-	 * @since 2021-09-21
-	 */
-	private function __construct() {
-		$this->did_init = false;
-	}
-
-	/**
-	 * Create or return instance of this class.
-	 *
-	 * @since 2021-09-21
-	 */
-	public static function get_instance(): self {
-		if ( null === self::$instance ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
-
-	/**
-	 * Initialize the plugin.
-	 *
-	 * @since 2021-09-21
-	 */
-	public function init(): void {
-		if ( $this->did_init ) {
-			return; // Already initialized.
-		}
-
-		// Flag as initialized.
-		$this->did_init = true;
-
-		add_action( 'init', array( $this, 'register_post_type' ) );
-	}
-
+class SRF_Warriors extends SRF_Post_Type {
 	/**
 	 * Registers SRF Warriors post type.
 	 *

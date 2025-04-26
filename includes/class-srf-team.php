@@ -10,68 +10,16 @@ namespace SRF_Team;
 
 use WP_Post;
 use WP_Query;
+use SRF_Base\SRF_Post_Type;
 
-class SRF_Team {
+class SRF_Team extends SRF_Post_Type {
 	/**
-	 * Singleton instance.
+	 * Initialize additional functionality for this post type.
 	 *
-	 * @since 2021-09-21
-	 *
-	 * @var self Instance.
+	 * @since 2024-03-26
 	 */
-	private static $instance = null;
-
-	/**
-	 * Has been initialized yet?
-	 *
-	 * @since 2021-09-21
-	 *
-	 * @var bool Initialized?
-	 */
-	private $did_init;
-
-	/**
-	 * Private constructor.
-	 *
-	 * @since 2021-09-21
-	 */
-	private function __construct() {
-		$this->did_init = false;
-	}
-
-	/**
-	 * Create or return instance of this class.
-	 *
-	 * @since 2021-09-21
-	 */
-	public static function get_instance(): self {
-		if ( null === self::$instance ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
-
-	/**
-	 * Initialize the plugin.
-	 *
-	 * @since 2021-09-21
-	 */
-	public function init(): void {
-		if ( $this->did_init ) {
-			return; // Already initialized.
-		}
-
-		// Flag as initialized.
-		$this->did_init = true;
-
-		add_action( 'init', array( $this, 'register_post_type' ) );
+	protected function init_post_type(): void {
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
-
-		add_filter( 'post_type_link', array( $this, 'modify_permalinks' ), 10, 2 );
-		add_action( 'generate_rewrite_rules', array( $this, 'custom_rewrite_rules' ) );
-
-		add_action( 'pre_get_posts', array( $this, 'order_by_state' ), 99 );
 	}
 
 	/**
@@ -87,23 +35,23 @@ class SRF_Team {
 			'name_admin_bar' => 'SRF Team Member',
 			'menu_name'      => 'SRF Team',
 
-			'all_items'    => 'All SRF Team',
+			'all_items'    => 'All SRF Team Members',
 			'add_new'      => 'Add SRF Team Member',
 			'add_new_item' => 'Add New SRF Team Member',
 			'new_item'     => 'New SRF Team Member',
 			'edit_item'    => 'Edit SRF Team Member',
 			'view_item'    => 'View SRF Team Member',
 
-			'search_items'       => 'Search SRF Team',
-			'not_found'          => 'No SRF Team Found',
-			'not_found_in_trash' => 'No SRF Team Found in Trash',
+			'search_items'       => 'Search SRF Team Members',
+			'not_found'          => 'No SRF Team Members Found',
+			'not_found_in_trash' => 'No SRF Team Members Found in Trash',
 
 			'parent_item_colon' => 'Parent SRF Team Member:',
 		);
 
 		$args = array(
 			'labels'              => $labels,
-			'description'         => 'SRF Team',
+			'description'         => 'SRF Team Members',
 			'menu_icon'           => 'dashicons-groups',
 			'menu_position'       => 21, // After Warriors.
 			'hierarchical'        => false,
@@ -118,7 +66,10 @@ class SRF_Team {
 			'has_archive'         => true,
 			'query_var'           => true,
 			'can_export'          => true,
-			'rewrite'             => true,
+			'rewrite'             => array(
+				'with_front' => false,
+				'slug'       => 'team/%srf-team-category%',
+			),
 			'taxonomies'          => array(
 				'srf-team-category',
 			),
@@ -184,10 +135,6 @@ class SRF_Team {
 			'show_admin_column' => true,
 			'show_in_rest'      => true,
 			'sort'              => true,
-			'rewrite'           => array(
-				'with_front' => false,
-				'slug'       => 'team',
-			),
 		);
 		register_taxonomy(
 			'srf-team-category',
@@ -248,33 +195,18 @@ class SRF_Team {
 	}
 
 	/**
-	 * Attempts to fix pagination for taxonomy permalinks.
+	 * Adds custom rewrite rules.
 	 *
-	 * @param  $wp_rewrite Rewrite rules array.
+	 * @param WP_Rewrite $wp_rewrite WordPress rewrite class.
 	 *
-	 * @return void
-	 * @since 2018-08-22
-	 *
+	 * @since 2024-03-23
 	 */
 	public function custom_rewrite_rules( $wp_rewrite ): void {
-		$rules = array();
-		$terms = get_terms(
-			array(
-				'taxonomy'   => 'srf-team-category',
-				'hide_empty' => false,
-			)
+		$new_rules = array(
+			'team/([^/]+)/([^/]+)/?$' => 'index.php?post_type=srf-team&name=$matches[2]',
+			'team/([^/]+)/?$'         => 'index.php?srf-team-category=$matches[1]',
 		);
-
-		$post_type = 'srf-team';
-
-		foreach ( $terms as $term ) {
-
-			$rules[ 'team/' . $term->slug . '/([^/]*)$' ] = 'index.php?post_type=' . $post_type . '&srf-team=$matches[1]&name=$matches[1]';
-
-		}
-
-		// merge with global rules.
-		$wp_rewrite->rules = $rules + $wp_rewrite->rules;
+		$wp_rewrite->rules = $new_rules + $wp_rewrite->rules;
 	}
 }
 

@@ -9,64 +9,16 @@
 namespace SRF_Events;
 
 use WP_Post;
+use SRF_Base\SRF_Post_Type;
 
-class SRF_Events {
+class SRF_Events extends SRF_Post_Type {
 	/**
-	 * Singleton instance.
+	 * Initialize additional functionality for this post type.
 	 *
-	 * @since 2021-09-21
-	 *
-	 * @var self Instance.
+	 * @since 2024-03-26
 	 */
-	private static $instance = null;
-
-	/**
-	 * Has been initialized yet?
-	 *
-	 * @since 2021-09-21
-	 *
-	 * @var bool Initialized?
-	 */
-	private $did_init;
-
-	/**
-	 * Private constructor.
-	 *
-	 * @since 2021-09-21
-	 */
-	private function __construct() {
-		$this->did_init = false;
-	}
-
-	/**
-	 * Create or return instance of this class.
-	 *
-	 * @since 2021-09-21
-	 */
-	public static function get_instance(): self {
-		if ( null === self::$instance ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
-
-	/**
-	 * Initialize the plugin.
-	 *
-	 * @since 2021-09-21
-	 */
-	public function init(): void {
-		if ( $this->did_init ) {
-			return; // Already initialized.
-		}
-
-		// Flag as initialized.
-		$this->did_init = true;
-
-		add_action( 'init', array( $this, 'register_post_type' ) );
+	protected function init_post_type(): void {
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
-
 		add_filter( 'post_type_link', array( $this, 'modify_permalinks' ), 10, 2 );
 	}
 
@@ -211,7 +163,7 @@ class SRF_Events {
 				$cat_slug = current( $cats )->slug;
 				$link     = str_replace( '%srf-events-category%', $cat_slug, $link );
 			} else {
-				$link = str_replace( '%srf-events-category%', 'uncategorized', $link );
+				$link     = str_replace( '%srf-events-category%', 'uncategorized', $link );
 			}
 		}
 
