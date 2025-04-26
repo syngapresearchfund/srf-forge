@@ -8,7 +8,9 @@
 
 namespace SRF_Siblings;
 
-class SRF_Siblings {
+use SRF_Base\SRF_Post_Type;
+
+class SRF_Siblings extends SRF_Post_Type {
 	/**
 	 * Singleton instance.
 	 *

@@ -24,6 +24,9 @@ function srf_load_textdomain() {
 }
 add_action( 'plugins_loaded', 'srf_load_textdomain' );
 
+// Require base class first
+require_once __DIR__ . '/includes/class-srf-post-type.php';
+
 // Require CPT classes
 require_once __DIR__ . '/includes/class-srf-warriors.php';
 require_once __DIR__ . '/includes/class-srf-siblings.php';

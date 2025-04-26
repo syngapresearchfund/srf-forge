@@ -9,8 +9,9 @@
 namespace SRF_Resources;
 
 use WP_Post;
+use SRF_Base\SRF_Post_Type;
 
-class SRF_Resources {
+class SRF_Resources extends SRF_Post_Type {
 	/**
 	 * Singleton instance.
 	 *
@@ -67,6 +68,17 @@ class SRF_Resources {
 		add_action( 'init', array( $this, 'register_post_type' ) );
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
 
+		add_filter( 'post_type_link', array( $this, 'modify_permalinks' ), 10, 2 );
+		add_action( 'generate_rewrite_rules', array( $this, 'custom_rewrite_rules' ) );
+	}
+
+	/**
+	 * Initialize additional functionality for this post type.
+	 *
+	 * @since 2024-03-26
+	 */
+	protected function init_post_type(): void {
+		add_action( 'init', array( $this, 'register_taxonomies' ) );
 		add_filter( 'post_type_link', array( $this, 'modify_permalinks' ), 10, 2 );
 		add_action( 'generate_rewrite_rules', array( $this, 'custom_rewrite_rules' ) );
 	}
@@ -226,33 +238,18 @@ class SRF_Resources {
 	}
 
 	/**
-	 * Attempts to fix pagination for taxonomy permalinks.
+	 * Adds custom rewrite rules.
 	 *
-	 * @param  $wp_rewrite Rewrite rules array.
+	 * @param WP_Rewrite $wp_rewrite WordPress rewrite class.
 	 *
-	 * @return void
-	 * @since 2018-08-22
-	 *
+	 * @since 2024-03-26
 	 */
 	public function custom_rewrite_rules( $wp_rewrite ): void {
-		$rules = array();
-		$terms = get_terms(
-			array(
-				'taxonomy'   => 'srf-resources-category',
-				'hide_empty' => false,
-			)
+		$new_rules = array(
+			'resources/([^/]+)/([^/]+)/?$' => 'index.php?post_type=srf-resources&name=$matches[2]',
+			'resources/([^/]+)/?$'         => 'index.php?srf-resources-category=$matches[1]',
 		);
-
-		$post_type = 'srf-resources';
-
-		foreach ( $terms as $term ) {
-
-			$rules[ 'resources/' . $term->slug . '/([^/]*)$' ] = 'index.php?post_type=' . $post_type . '&srf-resources=$matches[1]&name=$matches[1]';
-
-		}
-
-		// merge with global rules.
-		$wp_rewrite->rules = $rules + $wp_rewrite->rules;
+		$wp_rewrite->rules = $new_rules + $wp_rewrite->rules;
 	}
 }
 
